@@ -1,6 +1,9 @@
 package com.appspiriment.conventions
 
+import appspirimentTomlContents
+import appspirimentTomlName
 import com.android.build.api.dsl.CommonExtension
+import libVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
@@ -13,13 +16,12 @@ import java.util.Properties
 internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
     version: ModuleVersionInfo
-) : ProjectVersions{
-    val projectConfig = configs
+) {
     commonExtension.apply {
-        compileSdk = projectConfig.compileSdk
+        compileSdk = projectConfigs.compileSdk
 
         defaultConfig.apply {
-            minSdk = projectConfig.minSdk
+            minSdk = projectConfigs.minSdk
             buildConfigField("int", "VERSIONCODE", "${version.releaseCode}")
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -28,8 +30,8 @@ internal fun Project.configureKotlinAndroid(
             }
 
             compileOptions {
-                sourceCompatibility = projectConfig.javaVersion
-                targetCompatibility = projectConfig.javaVersion
+                sourceCompatibility = projectConfigs.javaVersion
+                targetCompatibility = projectConfigs.javaVersion
             }
 
             val proguardFile = "proguard-rules.pro"
@@ -49,7 +51,7 @@ internal fun Project.configureKotlinAndroid(
 
         project.tasks.withType(KotlinCompile::class.java).configureEach {
             kotlinOptions {
-                jvmTarget = projectConfig.javaVersion.toString()
+                jvmTarget = projectConfigs.javaVersion.toString()
             }
         }
 
@@ -66,8 +68,8 @@ internal fun Project.configureKotlinAndroid(
 
         compileOptions {
 
-            sourceCompatibility = projectConfig.javaVersion
-            targetCompatibility = projectConfig.javaVersion
+            sourceCompatibility = projectConfigs.javaVersion
+            targetCompatibility = projectConfigs.javaVersion
             isCoreLibraryDesugaringEnabled = false
         }
 
@@ -78,7 +80,7 @@ internal fun Project.configureKotlinAndroid(
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             // Set JVM target to 11
-            jvmTarget = projectConfig.javaVersion.toString()
+            jvmTarget = projectConfigs.javaVersion.toString()
             // Treat all Kotlin warnings as errors (disabled by default)
             // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
             val warningsAsErrors: String? by project
@@ -91,14 +93,12 @@ internal fun Project.configureKotlinAndroid(
             )
         }
     }
-
-    return projectConfig
 }
 
 internal fun getVersionCodes(): ModuleVersionInfo {
     val propsFile = File("version.properties").apply {
         if (!exists()) writeText(
-            "MAJOR=0\nPATCH=0\nREVISION=0\nRELEASE_REVISION=0"
+            "MAJOR=1\nPATCH=0\nREVISION=0\nRELEASE_REVISION=0"
         )
     }
 
@@ -131,6 +131,17 @@ internal fun getVersionCodes(): ModuleVersionInfo {
         }
     } else {
         throw FileNotFoundException("Could not read version.properties!")
+    }
+}
+
+internal fun copyAppspirimentLibs(baseDir: File?) {
+    File(baseDir?.path + "/gradle/$appspirimentTomlName.versions.toml").run {
+        if (
+            !exists() ||
+            readLines().firstOrNull { it.contains("appspiriment =") }?.contains("\"$libVersion\"") != true
+        ) {
+            writeText(appspirimentTomlContents)
+        }
     }
 }
 
