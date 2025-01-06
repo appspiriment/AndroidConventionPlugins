@@ -1,6 +1,6 @@
 [versions]
 #App Versions
-appspiriment = "0.1.1"
+appspiriment = "0.1.0"
 javaVersion = "17"
 
 agp = "8.4.2"

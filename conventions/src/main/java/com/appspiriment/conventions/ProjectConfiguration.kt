@@ -41,11 +41,6 @@ val Project.projectConfigs : ProjectConfiguration get() = projectConfiguration ?
     )
 }.also { projectConfiguration = it }
 
-
-internal fun VersionCatalog.getVersion(key: String): String{
-    return findVersion(key).getOrNull()?.toString() ?: throw Exception("$key version not found - add version under 'key' in libs")
-}
-
 data class ProjectConfiguration(
     val minSdk: Int,
     val targetSdk: Int,

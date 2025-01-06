@@ -1,7 +1,10 @@
+import com.appspiriment.conventions.Dependency
+import com.appspiriment.conventions.ImplType
 import com.appspiriment.conventions.androidApp
 import com.appspiriment.conventions.configureAndroidKotlinAndCompose
 import com.appspiriment.conventions.projectConfigs
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME as Impl
 
 open class AndroidApplicationConventionPlugin : AndroidConventionPlugin() {
@@ -34,11 +37,21 @@ open class AndroidApplicationConventionPlugin : AndroidConventionPlugin() {
         )
         with(target) {
             androidApp {
-                configureAndroidKotlinAndCompose(commonExtension = this, version = versions)
+//                val registerExtension: ExtensionAware.() -> Unit = {
+//                    extensions.add("androidApplication", ConfigureApplication::class.java)
+//                }
+//
+//                buildTypes.all { registerExtension() }
+//                productFlavors.all { registerExtension() }
 
-                defaultConfig.apply {
-                    targetSdk = projectConfigs.targetSdk
-                    multiDexEnabled = true
+                configureAndroidKotlinAndCompose(commonExtension = this, version = versions)
+                project.extensions.create("androidApplication", ConfigureApplication::class.java).apply {
+                    namespace = appId
+                    defaultConfig.apply {
+                        targetSdk = projectConfigs.targetSdk
+                        applicationId = appId
+                        multiDexEnabled = true
+                    }
                 }
 
                 buildTypes {
@@ -58,7 +71,9 @@ open class AndroidApplicationConventionPlugin : AndroidConventionPlugin() {
                 }
             }
         }
-
     }
-
 }
+
+open class ConfigureApplication(
+    var appId: String= "com.example.application"
+)

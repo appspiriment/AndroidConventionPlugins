@@ -58,13 +58,13 @@ gradlePlugin {
             tags = listOf("android", "library", "conventions")
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-        create("androidSettings") {
-            id = "com.appspiriment.settings"
-            displayName = "Android Project Settings Convention Plugin"
+        create("androidProject") {
+            id = "com.appspiriment.project"
+            displayName = "Android Project Root Convention Plugin"
             description =
-                "This plugin applies the required configurations Settings Gradle also creating requiredlibs.versions.toml."
+                "This plugin applies the required configurations for Gradle also creating requiredlibs.versions.toml."
             tags = listOf("android", "Settings", "conventions")
-            implementationClass = "AndroidSettingsConventionPlugin"
+            implementationClass = "AndroidProjectConventionPlugin"
         }
     }
 }
@@ -96,6 +96,7 @@ tasks.register("updateLibVersion") {
                 "internal const val appspirimentTomlName = \"appspirimentlibs\"\n\n" +
                      "internal const val libVersion = \"${libs.versions.appspiriment.get()}\"\n\n" +
                      "internal const val appspirimentTomlContents = \"$libsContent\"\n\n" +
+                     "internal fun getDefaultAppGradle(appId: String) = \"plugins {\\n    alias(appspirimentlibs.plugins.appspiriment.application)\\n}\\nandroidApplication {\\n    appId = \$appId\\n\\n}\"\n" +
                      "internal val versionsRefs = mapOf(\n$versionRefs\n)"
             )
         }

@@ -1,3 +1,5 @@
+import com.appspiriment.conventions.Dependency
+import com.appspiriment.conventions.ImplType
 import com.appspiriment.conventions.androidLibrary
 import com.appspiriment.conventions.projectConfigs
 import com.appspiriment.conventions.configureKotlinAndroid

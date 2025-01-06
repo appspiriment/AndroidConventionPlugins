@@ -6,6 +6,12 @@ import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.project
 import kotlin.jvm.optionals.getOrElse
 
+internal fun VersionCatalog.getVersion(alias: String): String {
+    return findVersion(alias).getOrElse {
+        throw Exception("Version $alias not found in ${this.name}")
+    }.toString()
+}
+
 internal fun PluginManager.applyPluginFromLibs(
     vararg pluginIdList: Pair<VersionCatalog, List<String>>
 ) {
