@@ -1,5 +1,6 @@
 package com.appspiriment.conventions
 
+import appspirimentLibRefs
 import appspirimentTomlContents
 import appspirimentTomlName
 import com.android.build.api.dsl.CommonExtension
@@ -141,6 +142,21 @@ internal fun copyAppspirimentLibs(baseDir: File?) {
             readLines().firstOrNull { it.contains("appspiriment =") }?.contains("\"$libVersion\"") != true
         ) {
             writeText(appspirimentTomlContents)
+            if(appspirimentTomlContents != "libs"){
+                File(baseDir?.path + "/gradle/libs.versions.toml").let{ libFile ->
+                    libFile.readLines().toMutableList().apply {
+                        appspirimentLibRefs.run {
+                            versions.plus(plugins).forEach {
+                                removeIf { line -> line.contains("\"$it\"") }
+                            }
+                            libraries.forEach {
+                                removeIf { line -> line.contains("\"${it.first}\"") && line.contains("\"${it.second}\"") }
+                            }
+                        }
+                        libFile.writeText(joinToString("\n"))
+                    }
+                }
+            }
         }
     }
 }
@@ -154,10 +170,6 @@ internal fun Project.configureAndroidKotlinAndCompose(
     commonExtension.apply {
         buildFeatures {
             compose = true
-        }
-
-        composeOptions {
-            kotlinCompilerExtensionVersion = requiredLibs.findVersion("composeCompiler").get().toString()
         }
     }
 

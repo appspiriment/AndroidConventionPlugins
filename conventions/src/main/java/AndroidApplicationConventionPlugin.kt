@@ -11,7 +11,8 @@ open class AndroidApplicationConventionPlugin : AndroidConventionPlugin() {
 
     private val requiredPluginList = listOf(
         "google-android-application",
-        "kotlinx-serialization"
+        "kotlinx-serialization",
+        "kotlin-compose",
     )
 
     private val requiredDependencies: List<Dependency> =

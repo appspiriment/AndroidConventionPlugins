@@ -84,20 +84,46 @@ tasks.register("updateLibVersion") {
 //
 //    }
 
-    File(project.parent?.projectDir?.path +"/gradle/requiredlibs.versions.toml").readLines().let{
-        val libsContent =it.joinToString("\\n").replace("LIBVERSION", libs.versions.appspiriment.get()).replace("\"", "\\\"")
-        val versionRefs = it.subList(it.indexOf("#Classpath Version")+1, it.indexOf("#Classpath Version End")).map{version ->
-            version.split("=").run{
-                "\"${first().trim()}\" to ${get(1).trim()},"
-            }
-        }.joinToString("\n")
-        File(project.projectDir.path + "/src/main/java/com/appspiriment/conventions/Constants.kt").run{
+    File(project.parent?.projectDir?.path + "/gradle/requiredlibs.versions.toml").readLines().let {
+        fun List<String>.asString() = "listOf(\n${joinToString(",\n" )})"
+        val versionRefs = it.subList(it.indexOf("[versions]") + 1, it.indexOf("[libraries]"))
+            .filter { line -> !line.startsWith("#") && line.isNotBlank() }
+            .map { item ->
+                item.split("=").run {
+                    "        \"${first().trim()}\""
+                }
+            }.asString()
+
+        val pluginRefs = it.subList(it.indexOf("[plugins]") + 1, it.size-1)
+            .filter { line -> !line.startsWith("#") && line.isNotBlank() }
+            .map {line ->
+                line.split("{")[1].split("id =")[1].split("\"")[1].trim().let{id->
+                    "        \"$id\""
+                }
+            }.asString()
+
+        val libraryRefs = it.subList(it.indexOf("[libraries]") + 1, it.indexOf("[bundles]"))
+            .filter { line -> !line.startsWith("#") && line.isNotBlank() && line.contains("group =") && line.contains("name =")}
+            .map {line ->
+                val group = line.split("{")[1].split("group =")[1].split("\"")[1].trim()
+                val artifact = line.split("{")[1].split("name =")[1].split("\"")[1].trim()
+                "        Pair(\"$group\", \"$artifact\")"
+            }.asString()
+//
+        val libsContent =
+            it.joinToString("\\n").replace("LIBVERSION", libs.versions.appspiriment.get())
+                .replace("\"", "\\\"")
+
+        File(project.projectDir.path + "/src/main/java/com/appspiriment/conventions/Constants.kt").run {
+            val baseAppspirimentTomlName = "appspirimentlibs"
             writeText(
-                "internal const val appspirimentTomlName = \"appspirimentlibs\"\n\n" +
-                     "internal const val libVersion = \"${libs.versions.appspiriment.get()}\"\n\n" +
-                     "internal const val appspirimentTomlContents = \"$libsContent\"\n\n" +
-                     "internal fun getDefaultAppGradle(appId: String) = \"plugins {\\n    alias(appspirimentlibs.plugins.appspiriment.application)\\n}\\nandroidApplication {\\n    appId = \$appId\\n\\n}\"\n" +
-                     "internal val versionsRefs = mapOf(\n$versionRefs\n)"
+                "import com.appspiriment.conventions.AppspirimentLibRef\nimport com.appspiriment.conventions.PluginRefs\nimport com.appspiriment.conventions.VersionRefs\n\n" +
+                        "internal const val appspirimentTomlName = \"$baseAppspirimentTomlName\"\n\n" +
+                        "internal const val libVersion = \"${libs.versions.appspiriment.get()}\"\n\n" +
+                        "internal const val appspirimentTomlContents = \"$libsContent\"\n\n" +
+                        "internal fun getDefaultAppGradle(appId: String) = \"plugins {\\n    alias($baseAppspirimentTomlName.plugins.appspiriment.application)\\n}\\nandroidApplication {\\n    appId = \\\"\$appId\\\"\\n}\"\n\n" +
+//                     "internal val versionsRefs = mapOf(\n$versionRefs\n)\n\n" +
+                        "internal val appspirimentLibRefs = AppspirimentLibRef(\n    versions= $versionRefs,\n    plugins= $pluginRefs,\n    libraries= $libraryRefs\n)"
             )
         }
     }

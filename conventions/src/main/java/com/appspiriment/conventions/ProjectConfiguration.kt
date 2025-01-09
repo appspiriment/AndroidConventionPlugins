@@ -1,5 +1,6 @@
 
 package com.appspiriment.conventions
+import appspirimentTomlName
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.JavaVersion
@@ -16,7 +17,7 @@ val Project.libs
     get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 val Project.requiredLibs
-    get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("appspirimentlibs")
+    get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named(appspirimentTomlName)
 
 fun Project.androidApp(block: ApplicationExtension.() -> Unit){
     extensions.configure<ApplicationExtension>{

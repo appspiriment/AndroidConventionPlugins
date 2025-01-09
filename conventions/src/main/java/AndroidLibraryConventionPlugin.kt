@@ -11,6 +11,10 @@ open class AndroidLibraryConventionPlugin : AndroidConventionPlugin() {
     private val requiredPluginList = listOf(
         "google-google-android-library",
     )
+    private val requiredComposePluginList = listOf(
+        "kotlin-compose",
+        "kotlinx-serialization"
+    )
 
     private val composeLibrary: List<Dependency> =
         listOf(
@@ -35,7 +39,7 @@ open class AndroidLibraryConventionPlugin : AndroidConventionPlugin() {
                 super.applyPlugin(
                     target = target,
                     requiredPluginList = requiredPluginList.run{
-                        if (isComposeLibrary) plus("kotlinx-serialization") else this
+                        if (isComposeLibrary) plus(requiredComposePluginList) else this
                     },
                     requiredDependencies = if (isComposeLibrary) composeLibrary else emptyList()
                 )
