@@ -4,7 +4,6 @@ import com.appspiriment.conventions.androidApp
 import com.appspiriment.conventions.configureAndroidKotlinAndCompose
 import com.appspiriment.conventions.projectConfigs
 import org.gradle.api.Project
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME as Impl
 
 open class AndroidApplicationConventionPlugin : AndroidConventionPlugin() {
@@ -38,13 +37,6 @@ open class AndroidApplicationConventionPlugin : AndroidConventionPlugin() {
         )
         with(target) {
             androidApp {
-//                val registerExtension: ExtensionAware.() -> Unit = {
-//                    extensions.add("androidApplication", ConfigureApplication::class.java)
-//                }
-//
-//                buildTypes.all { registerExtension() }
-//                productFlavors.all { registerExtension() }
-
                 configureAndroidKotlinAndCompose(commonExtension = this, version = versions)
                 project.extensions.create("androidApplication", ConfigureApplication::class.java).apply {
                     namespace = appId

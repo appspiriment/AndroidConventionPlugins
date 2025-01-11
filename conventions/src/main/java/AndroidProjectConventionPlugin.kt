@@ -57,10 +57,12 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
                         lines.any {line-> line.contains(it)}
                     }
                 }
-                val firstPluginLine = lines.indexOfFirst{ it.contains("com.appspiriment.project") }
+                val firstPluginLine = lines.indexOfFirst{ it.contains("io.github.appspiriment.project")
+                        || it.contains("appspirimentlibs.plugins.appspiriment.project")}
                 lines.removeAt(firstPluginLine)
                 lines.add( firstPluginLine, plugins.joinToString("\n"))
-                lines.add(firstPluginLine,"//    id(\"com.appspiriment.project\") version \"$libVersion\"")
+                lines.add(firstPluginLine,"//    id(\"io.github.appspiriment.project\") version \"$libVersion\"")
+//                lines.add(firstPluginLine,"//    alias(appspirimentlibs.plugins.appspiriment.project)")
                 file.writeText(lines.joinToString("\n"))
             }
         }

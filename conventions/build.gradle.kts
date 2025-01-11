@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.build.joinToReadableString
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -8,7 +7,6 @@ plugins {
     `version-catalog`
 }
 
-group = "com.appspiriment.plugins"
 val javaVersion = libs.versions.javaVersion.get()
 java {
     JavaVersion.toVersion(javaVersion).let {
@@ -30,7 +28,7 @@ dependencies {
     compileOnly(libs.ksp.gradle.plugin)
 }
 
-group = "com.appspiriment.conventions"
+group = "io.github.appspiriment.conventions"
 version = pluginMainVersion
 
 signing {
@@ -43,36 +41,52 @@ gradlePlugin {
         website = "https://github.com/arunkarshan/AndroidConventionPlugins"
         vcsUrl = "https://github.com/arunkarshan/AndroidConventionPlugins"
         create("androidApplication") {
-            id = "com.appspiriment.application"
+            id = "io.github.appspiriment.application"
             displayName = "Android Application Convention Plugin"
             description =
-                "This plugin applies the required configurations for an Android application module, along with Hilt DI. It also manage the versioning of the app by updating the version on each build using version.properties. The required libraries like android plugin and kotlin plugin will be added to requiredlibs.versions.toml."
+                "This Gradle plugin configures an Android application module with the necessary setup for Hilt Dependency Injection (DI). It automatically manages versioning by updating the version in a `version.properties` file with each build. The plugin streamlines the setup for the Android application, enabling seamless integration with Hilt DI and automatic version management. \n" +
+                        "\n" +
+                        "Warning: Modifying or changing the `appspirimentlibs.versions.toml` file manually can cause the plugin to fail, as it may get overwritten during plugin updates. For any version changes or dependency additions, it is recommended to update the default `libs.versions.toml` file instead."
             tags = listOf("android", "application", "conventions")
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         create("androidLibrary") {
-            id = "com.appspiriment.library"
+            id = "io.github.appspiriment.library"
             displayName = "Android Library Convention Plugin"
             description =
-                "This plugin applies the required configurations for an Android Library module, along with Hilt DI. It also manage the versioning of the app by updating the version on each build using version.properties. It is also configurable with compose libraries. The required libraries will be added to requiredlibs.versions.toml."
+                "This Gradle plugin configures an Android Library module with Hilt Dependency Injection (DI) using KSP (Kotlin Symbol Processing) and does not configure KAPT. It automatically applies the Hilt plugin to the library, enabling DI functionality with KSP. The plugin features a configurable extension, `configureLibrary`, which allows you to enable Compose capabilities by setting `isComposeLibrary` to true within the extension. Additionally, the plugin updates the `appspirimentlibs.versions.toml` file to manage and include the required dependencies for the library. This plugin streamlines the setup for Android libraries, providing seamless integration with Hilt (via KSP) and optional support for Compose."
             tags = listOf("android", "library", "conventions")
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         create("androidProject") {
-            id = "com.appspiriment.project"
+            id = "io.github.appspiriment.project"
             displayName = "Android Project Root Convention Plugin"
             description =
-                "This plugin applies the required configurations for Gradle also creating requiredlibs.versions.toml."
+                "This project plugin simplifies the initial setup and version management for an Android application. It removes unnecessary configurations from the app module, creates the `appspirimentlibs.versions.toml` file corresponding to the plugin version, and adds the required `appspiriment` plugin exclusively to the app module (without affecting any other application modules or libraries).\n" +
+                        "\n" +
+                        "Additionally, the plugin configures the `appspirimentlibs.versions.toml` in the `settings.gradle.kts`. **Note:** If your project is using a `settings.gradle` file in Groovy, it will automatically convert it to the Kotlin DSL (`settings.gradle.kts`).\n" +
+                        "\n" +
+                        "This plugin is ideal for setting up a new project with a clean configuration or updating plugin versions. To update versions, simply update the project plugin version and sync. Be aware that this plugin will remove all configurations in the app module's Gradle file, so ensure that no additional configurations are lost."
             tags = listOf("android", "Settings", "conventions")
             implementationClass = "AndroidProjectConventionPlugin"
         }
+        create("androidRoom") {
+            id = "io.github.appspiriment.room"
+            displayName = "Android Room Convention Plugin"
+            description =
+                "This plugin simplifies the setup of Room for an Android module by automatically applying the required libraries and configurations. It fetches the necessary Room versions from the `appspirimentlibs.versions.toml` file, so ensure that this file is present in your project before applying the plugin. \n" +
+                        "\n" +
+                        "Once applied, the plugin configures the module with all the dependencies and settings needed to integrate Room seamlessly. This helps streamline the setup process, ensuring consistency and compatibility with the versions specified in your `appspirimentlibs.versions.toml` file."
+            tags = listOf("android", "room", "conventions")
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
     }
 }
-publishing {
-    repositories {
-        mavenLocal()
-    }
-}
+//publishing {
+//    repositories {
+//        mavenLocal()
+//    }
+//}
 
 tasks.register("updateLibVersion") {
 //
@@ -122,7 +136,6 @@ tasks.register("updateLibVersion") {
                         "internal const val libVersion = \"${libs.versions.appspiriment.get()}\"\n\n" +
                         "internal const val appspirimentTomlContents = \"$libsContent\"\n\n" +
                         "internal fun getDefaultAppGradle(appId: String) = \"plugins {\\n    alias($baseAppspirimentTomlName.plugins.appspiriment.application)\\n}\\nandroidApplication {\\n    appId = \\\"\$appId\\\"\\n}\"\n\n" +
-//                     "internal val versionsRefs = mapOf(\n$versionRefs\n)\n\n" +
                         "internal val appspirimentLibRefs = AppspirimentLibRef(\n    versions= $versionRefs,\n    plugins= $pluginRefs,\n    libraries= $libraryRefs\n)"
             )
         }

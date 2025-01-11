@@ -47,6 +47,9 @@ espressoCore = "3.6.1"
 
 firebasecrashlyticsplugin = "3.0.2"
 uiTextGoogleFonts = "1.7.6"
+runner = "1.0.2"
+espressoCoreVersion = "3.0.2"
+appcompatV7 = "28.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -99,6 +102,9 @@ android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", ve
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 #firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebasecrashlyticsplugin" }
 ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+runner = { group = "com.android.support.test", name = "runner", version.ref = "runner" }
+espresso-core = { group = "com.android.support.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+appcompat-v7 = { group = "com.android.support", name = "appcompat-v7", version.ref = "appcompatV7" }
 
 [bundles]
 android-base = [
@@ -142,11 +148,3 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinserializeplugin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebasecrashlyticsplugin" }
-
-#Custom Project Plugins
-appspiriment-project = { id = "com.appspiriment.project", version.ref = "appspiriment" }
-appspiriment-application = { id = "com.appspiriment.application", version.ref = "appspiriment" }
-appspiriment-library = { id = "com.appspiriment.library", version.ref = "appspiriment" }
-appspiriment-library-compose = { id = "com.appspiriment.library.compose", version.ref = "appspiriment" }
-appspiriment-room = { id = "com.appspiriment.room", version.ref = "appspiriment" }
-

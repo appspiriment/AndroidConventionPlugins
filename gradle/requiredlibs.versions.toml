@@ -137,9 +137,8 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebasecrashlyticsplugin" }
 
 #Custom Project Plugins
-appspiriment-project = { id = "com.appspiriment.project", version.ref = "appspiriment" }
-appspiriment-application = { id = "com.appspiriment.application", version.ref = "appspiriment" }
-appspiriment-library = { id = "com.appspiriment.library", version.ref = "appspiriment" }
-appspiriment-library-compose = { id = "com.appspiriment.library.compose", version.ref = "appspiriment" }
-appspiriment-room = { id = "com.appspiriment.room", version.ref = "appspiriment" }
+appspiriment-project = { id = "io.github.appspiriment.project", version.ref = "appspiriment" }
+appspiriment-application = { id = "io.github.appspiriment.application", version.ref = "appspiriment" }
+appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }
+appspiriment-room = { id = "io.github.appspiriment.room", version.ref = "appspiriment" }
 

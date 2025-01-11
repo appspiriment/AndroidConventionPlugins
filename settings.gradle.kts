@@ -33,3 +33,4 @@ dependencyResolutionManagement {
 //}
 rootProject.name = "AppsUtils"
 include(":conventions")
+include(":utils")
