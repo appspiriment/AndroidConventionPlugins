@@ -10,6 +10,7 @@ compileSdk = "35"
 javaVersion = "17"
 
 appspiriment = "0.0.1"
+appspirimentUtils = "0.0.2"
 
 #Classpath Version
 agp = "8.4.2"
@@ -148,3 +149,5 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinserializeplugin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebasecrashlyticsplugin" }
+
+appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }

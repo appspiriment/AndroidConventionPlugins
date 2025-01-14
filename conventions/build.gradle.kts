@@ -1,4 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.gradle.plugin-publish") version "1.2.1"
@@ -28,9 +30,6 @@ dependencies {
     compileOnly(libs.ksp.gradle.plugin)
 }
 
-group = "io.github.appspiriment.conventions"
-version = pluginMainVersion
-
 signing {
     sign(publishing.publications)
 }
@@ -38,8 +37,10 @@ signing {
 gradlePlugin {
 
     plugins {
-        website = "https://github.com/arunkarshan/AndroidConventionPlugins"
-        vcsUrl = "https://github.com/arunkarshan/AndroidConventionPlugins"
+        group = "io.github.appspiriment.conventions"
+        version = pluginMainVersion
+        website = "https://github.com/appspiriment/AndroidConventionPlugins"
+        vcsUrl = "https://github.com/appspiriment/AndroidConventionPlugins"
         create("androidApplication") {
             id = "io.github.appspiriment.application"
             displayName = "Android Application Convention Plugin"
@@ -65,7 +66,7 @@ gradlePlugin {
                 "This project plugin simplifies the initial setup and version management for an Android application. It removes unnecessary configurations from the app module, creates the `appspirimentlibs.versions.toml` file corresponding to the plugin version, and adds the required `appspiriment` plugin exclusively to the app module (without affecting any other application modules or libraries).\n" +
                         "\n" +
                         "Additionally, the plugin configures the `appspirimentlibs.versions.toml` in the `settings.gradle.kts`. **Note:** If your project is using a `settings.gradle` file in Groovy, it will automatically convert it to the Kotlin DSL (`settings.gradle.kts`).\n" +
-                        "\n" +
+                        "\nYou just need to add the plugin with correct version to the root build.gradle.kts (don't use alias, add it directly at first) and sync.\n" +
                         "This plugin is ideal for setting up a new project with a clean configuration or updating plugin versions. To update versions, simply update the project plugin version and sync. Be aware that this plugin will remove all configurations in the app module's Gradle file, so ensure that no additional configurations are lost."
             tags = listOf("android", "Settings", "conventions")
             implementationClass = "AndroidProjectConventionPlugin"
@@ -85,18 +86,27 @@ gradlePlugin {
 //publishing {
 //    repositories {
 //        mavenLocal()
+//        maven {
+//            name = "AndroidConventionPlugins"
+//            /** Configure path of your package repository on Github
+//             *  Replace GITHUB_USERID with your/organisation Github userID and REPOSITORY with the repository name on GitHub
+//             */
+//            url = uri("https://maven.pkg.github.com/appspiriment/AndroidConventionPlugins")
+//
+//            credentials {
+//                val githubProperties = Properties()
+//                githubProperties.apply{
+//                    load(FileInputStream(rootProject.file("github.properties")))
+//                }.run{
+//                    username = get("gpr.usr")?.toString() ?: System.getenv("GPR_USER")
+//                    password = get("gpr.key")?.toString() ?: System.getenv("GPR_API_KEY")
+//                }
+//            }
+//        }
 //    }
 //}
 
 tasks.register("updateLibVersion") {
-//
-//    File(project.projectDir.path + "/src/main/java/com/appspiriment/conventions/LibsVersions.kt").run {
-//        val lines = mutableListOf<String>().apply { addAll(readLines()) }
-//        lines[lines.indexOfFirst { it.startsWith("const val LIB_VERSION") }] =
-//            "const val LIB_VERSION = \"${libs.versions.appspiriment.get()}\""
-//        writeText(lines.joinToString("\n"))
-//
-//    }
 
     File(project.parent?.projectDir?.path + "/gradle/requiredlibs.versions.toml").readLines().let {
         fun List<String>.asString() = "listOf(\n${joinToString(",\n" )})"

@@ -2,6 +2,11 @@ plugins {
     alias(libs.plugins.google.android.library)
     alias(libs.plugins.kotlin.android)
     `maven-publish`
+    signing
+}
+
+signing {
+    sign(publishing.publications)
 }
 
 android {
@@ -10,7 +15,12 @@ android {
 
     defaultConfig {
         minSdk = 26
-
+        aarMetadata {
+            minCompileSdk = 34
+        }
+        testFixtures {
+            enable = true
+        }
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -25,37 +35,38 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        libs.versions.javaVersion.get().toInt().let { JavaVersion.toVersion(it) }.let {
+            sourceCompatibility = it
+            targetCompatibility = it
+        }
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = libs.versions.javaVersion.get()
+    }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 
 dependencies {
-
-    implementation(libs.appcompat.v7)
     implementation(libs.kotlinx.coroutines.android)
     testImplementation(libs.junit.test)
-    androidTestImplementation(libs.runner)
-    androidTestImplementation(libs.espresso.core)
 }
 
+
 publishing {
+
     publications {
-        create<MavenPublication>("utils") {
-            groupId = "io.github.appspiriment"
+        create<MavenPublication>("mavenUtils") {
+            groupId = "io.github.appspirimentlabs"
             artifactId = "utils"
-            version = "0.0.1"
+            version = libs.versions.appspirimentUtils.get()
             pom {
                 name = "Appspiriment Utils"
                 description = "A library with common util functions and extension methods to help kotlin developers easily use them."
-                url = "http://www.example.com/library"
-                properties = mapOf(
-                    "myProp" to "value",
-                    "prop.with.dots" to "anotherValue"
-                )
+                url = "https://github.com/appspirimentlabs/AndroidConventionPlugins/tree/main/utils"
                 licenses {
                     license {
                         name = "The Apache License, Version 2.0"
@@ -64,9 +75,9 @@ publishing {
                 }
                 developers {
                     developer {
-                        id = "johnd"
-                        name = "John Doe"
-                        email = "john.doe@example.com"
+                        id = "appspirimentlabs"
+                        name = "Appspiriment Labs"
+                        email = "appspiriment@gmail.com"
                     }
                 }
                 scm {
@@ -75,7 +86,9 @@ publishing {
                     url = "http://example.com/my-library/"
                 }
             }
-            afterEvaluate { artifact(tasks.getByName("bundleReleaseAar"))}
+
+
+            afterEvaluate { from(components["release"])}
         }
     }
 }

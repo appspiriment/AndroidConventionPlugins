@@ -1,7 +1,7 @@
-package com.appspiriment.utils.extensions.time
+package com.appspiriment.utils.time
 
 import android.text.format.DateFormat
-import org.sankarasmrithi.utils.extensions.printLog
+import com.appspiriment.utils.extensions.printLog
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatterBuilder
@@ -26,9 +26,6 @@ val ZonedDateTime.dateTime_mmm_dd_HH_mm: String get() = format("MMM dd HH:mm")
 val ZonedDateTime.dateTime_mmm_dd_split_hh_mm_a: String get() = format("MMM dd\nhh:mm a")
 val ZonedDateTime.dateTime_mmm_dd_splut_HH_mm: String get() = format("MMM dd\nHH:mm")
 
-val ZonedDateTime.midnightInstance: ZonedDateTime get() = withHour(0).withMinute(0).withSecond(1)
-val ZonedDateTime.noonInstance: ZonedDateTime get() = withHour(12).withMinute(0).withSecond(1)
-
 val ZonedDateTime.nextDay: ZonedDateTime get() = plusDays(1)
 val ZonedDateTime.previousDay: ZonedDateTime get() = plusDays(-1)
 val ZonedDateTime.previousMonth: ZonedDateTime get() = plusMonths(-1)
@@ -41,6 +38,8 @@ val ZonedDateTime.decimalTime: Double get() = hour.toDouble() + (minute.toDouble
 val ZonedDateTime.millis: Long get() = toEpochSecond() * 1000
 val ZonedDateTime.midnightMillis: Long get() = midnightInstance.millis
 val ZonedDateTime.noonMillis: Long get() = noonInstance.millis
+val ZonedDateTime.midnightInstance: ZonedDateTime get() = withHour(0).withMinute(0).withSecond(1)
+val ZonedDateTime.noonInstance: ZonedDateTime get() = withHour(12).withMinute(0).withSecond(1)
 
 val Double.dms
     get(): Triple<Int, Int, Int> {
@@ -68,11 +67,11 @@ fun Double.fromHoursToHMS(): Triple<Int, Int, Int> {
 fun Double.fromHoursToNazhika(): Pair<Int, Int> = (this * 2.5).fromHoursToHMS().let {
     Pair(it.first, it.second)
 }
-fun Double.fromHourstoNVString(): String = fromHoursToNazhika().run { "$first നാ $second വി" }
-fun Double.fromNazhikaToNV(): Pair<Int, Int> = fromHoursToHMS().let {
+fun Double.hourstoNazhikaVinazhikaString(): String = fromHoursToNazhika().run { "$first നാ $second വി" }
+fun Double.nazhikaToNazhikaVinazhika(): Pair<Int, Int> = fromHoursToHMS().let {
     Pair(it.first, it.second)
 }
-fun Double.fromNazhikaToNVString(): String  = fromNazhikaToNV().let { "${it.first} നാ ${it.second} വി" }
+fun Double.nazhikatoNazhikaVinazhikaString(): String  = nazhikaToNazhikaVinazhika().let { "${it.first} നാ ${it.second} വി" }
 
 
 

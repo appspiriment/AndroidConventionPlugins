@@ -19,10 +19,6 @@ import kotlinx.coroutines.flow.flowOn
  *********************************************************/
 
 
-fun <T> T.asFlow(dispatcher: CoroutineDispatcher): Flow<T> {
-    return flowOf(this).cancellable().flowOn(dispatcher)
-}
-
 fun <T> List<T>.combineBy(predicate: (T) -> Boolean, selector: (T) -> Int): Int {
     return filter { predicate.invoke(it) }.sumOf { selector.invoke(it) }
 }
