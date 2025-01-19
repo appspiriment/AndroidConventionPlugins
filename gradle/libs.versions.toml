@@ -10,7 +10,7 @@ compileSdk = "35"
 javaVersion = "17"
 
 appspiriment = "0.0.1"
-appspirimentUtils = "0.0.2"
+appspirimentUtils = "0.0.1"
 
 #Classpath Version
 agp = "8.4.2"
