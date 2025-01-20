@@ -33,5 +33,3 @@ dependencyResolutionManagement {
 //}
 rootProject.name = "AppsUtils"
 include(":conventions")
-include(":utils")
-include(":logging:logger")

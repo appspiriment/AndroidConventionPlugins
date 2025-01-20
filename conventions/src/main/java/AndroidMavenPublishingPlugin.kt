@@ -62,10 +62,8 @@ class AndroidMavenPublishingPlugin : Plugin<Project> {
             target.buildscript.sourceFile?.let { file ->
                 file.readLines().toMutableList().let{lines ->
                    if(lines.any{it.contains("mavenPublishing")}.not() && lines.any{it.contains("coordinates(")}.not()) {
-                       lines.addLast(publishingGradle)
+                       file.writeText(publishingGradle)
                    }
-
-                    file.writeText(publishingGradle)
                 }
             }
         }
