@@ -15,11 +15,11 @@ pluginManagement {
 
 }
 dependencyResolutionManagement {
-//    versionCatalogs {
-//        create("requiredlibs") {
-//            from(files("gradle/requiredlibs.versions.toml"))
-//        }
-//    }
+    versionCatalogs {
+        create("appspirimentlibs") {
+            from(files("gradle/appspirimentlibs.versions.toml"))
+        }
+    }
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
@@ -34,3 +34,4 @@ dependencyResolutionManagement {
 rootProject.name = "AppsUtils"
 include(":conventions")
 include(":utils")
+include(":logging:logger")

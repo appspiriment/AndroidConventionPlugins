@@ -9,7 +9,7 @@ import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME as Im
 open class AndroidLibraryConventionPlugin : AndroidConventionPlugin() {
 
     private val requiredPluginList = listOf(
-        "google-google-android-library",
+        "google-android-library",
     )
     private val requiredComposePluginList = listOf(
         "kotlin-compose",

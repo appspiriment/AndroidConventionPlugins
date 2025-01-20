@@ -1,4 +1,4 @@
-package com.appspiriment.conventions
+package com.appspiriment.logger
 
 import org.junit.Test
 

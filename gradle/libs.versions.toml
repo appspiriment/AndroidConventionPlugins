@@ -9,7 +9,7 @@ targetSdk = "35"
 compileSdk = "35"
 javaVersion = "17"
 
-appspiriment = "0.0.1"
+appspiriment = "0.0.3"
 appspirimentUtils = "0.0.1"
 
 #Classpath Version
@@ -27,6 +27,7 @@ kotlinserialize = "1.6.3"
 kotlinxCoroutines = "1.7.3"
 
 googleServices = "4.4.2"
+vanniktechPublish = "0.28.0"
 
 #Android Compose  Dep Version
 lifecycleRuntimeKtx = "2.8.7"
@@ -51,6 +52,8 @@ uiTextGoogleFonts = "1.7.6"
 runner = "1.0.2"
 espressoCoreVersion = "3.0.2"
 appcompatV7 = "28.0.0"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -106,6 +109,8 @@ ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devt
 runner = { group = "com.android.support.test", name = "runner", version.ref = "runner" }
 espresso-core = { group = "com.android.support.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
 appcompat-v7 = { group = "com.android.support", name = "appcompat-v7", version.ref = "appcompatV7" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [bundles]
 android-base = [
@@ -145,9 +150,11 @@ dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hi
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+vanniktech-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechPublish" }
 
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinserializeplugin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebasecrashlyticsplugin" }
 
 appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }
+appspiriment-publish = { id = "io.github.appspiriment.mavenpublish", version.ref = "appspiriment" }

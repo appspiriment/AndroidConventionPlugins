@@ -81,6 +81,14 @@ gradlePlugin {
             tags = listOf("android", "room", "conventions")
             implementationClass = "AndroidRoomConventionPlugin"
         }
+        create("androidPublish") {
+            id = "io.github.appspiriment.mavenpublish"
+            displayName = "Android Maven Publish Plugin"
+            description =
+                "This plugin simplifies the setup of library modules to be published to Maven Central, it still need to be configured. This plugin utilises 'vanniktech maven publish' plugin."
+            tags = listOf("android", "publish")
+            implementationClass = "AndroidMavenPublishingPlugin"
+        }
     }
 }
 //publishing {
@@ -108,7 +116,7 @@ gradlePlugin {
 
 tasks.register("updateLibVersion") {
 
-    File(project.parent?.projectDir?.path + "/gradle/requiredlibs.versions.toml").readLines().let {
+    File(project.parent?.projectDir?.path + "/gradle/appspirimentlibs.versions.toml").readLines().let {
         fun List<String>.asString() = "listOf(\n${joinToString(",\n" )})"
         val versionRefs = it.subList(it.indexOf("[versions]") + 1, it.indexOf("[libraries]"))
             .filter { line -> !line.startsWith("#") && line.isNotBlank() }

@@ -3,7 +3,7 @@ import com.vanniktech.maven.publish.SonatypeHost
 plugins {
     alias(libs.plugins.google.android.library)
     alias(libs.plugins.kotlin.android)
-    id("com.vanniktech.maven.publish") version "0.28.0"
+    alias(libs.plugins.vanniktech.publish)
     `maven-publish`
     signing
 }
@@ -147,16 +147,10 @@ mavenPublishing {
                 email = "appspiriment@gmail.com"
             }
         }
-        scm {
-            connection = "scm:git:git://example.com/my-library.git"
-            developerConnection = "scm:git:ssh://example.com/my-library.git"
-            url = "http://example.com/my-library/"
-        }
     }
 
     // Configure publishing to Maven Central
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-
     // Enable GPG signing for all publications
     signAllPublications()
 }

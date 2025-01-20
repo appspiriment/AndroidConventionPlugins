@@ -94,3 +94,21 @@ open class AppspirimentExtension(
     var pluginList: List<String> = emptyList(),
     var dependencyList: List<Dependency> = emptyList()
 )
+
+
+open class PublishingExtension(
+    var groupId: String = "io.github.appspiriment",
+    var artifactId: String = "",
+    var version: String = "",
+    var name: String = "",
+    var description: String = "",
+    var url: String = "",
+    var licenseName: String = "The Apache License, Version 2.0",
+    var licenseUrl: String = "http://www.apache.org/licenses/LICENSE-2.0.txt",
+    var developerId: String = "appspiriment",
+    var developerName: String = "Appspiriment Labs",
+    var developerEmail: String = "appspiriment@gmail.com",
+    var scmConnection: String = "",
+    var scmDevConnection: String = "",
+    var scmUrl: String = "",
+)
