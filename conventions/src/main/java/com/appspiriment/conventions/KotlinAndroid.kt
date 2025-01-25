@@ -4,17 +4,52 @@ import appspirimentLibRefs
 import appspirimentTomlContents
 import appspirimentTomlName
 import com.android.build.api.dsl.CommonExtension
+import com.android.tools.r8.internal.co
 import libVersion
 import org.gradle.api.Project
+import org.gradle.internal.impldep.com.jcraft.jsch.ConfigRepository.defaultConfig
+import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.util.Properties
 
-internal fun Project.configureKotlinAndroid(
+internal fun Project.configureAndroid(
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
+    version: ModuleVersionInfo,
+    config:AppspirimentExtension
+){
+    commonExtension.run{
+        configureKotlinAndroid(commonExtension = commonExtension, version = version)
+        commonExtension.apply {
+            buildFeatures {
+                compose = config.enableCompose
+            }
+        }
+        if (config.enableCompose) {
+            tasks.withType<KotlinCompile>().configureEach {
+                compilerOptions {
+                    freeCompilerArgs.apply {
+                        addAll(buildComposeMetricsParameters())
+                    }
+                }
+            }
+        }
+        defaultConfig.apply {
+            namespace = config.namespace
+            buildTypes {
+                getByName("release") {
+                    isMinifyEnabled = config.minifyRelease
+                }
+            }
+        }
+    }
+}
+private fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
     version: ModuleVersionInfo
 ) {
@@ -38,7 +73,7 @@ internal fun Project.configureKotlinAndroid(
             val proguardFile = "proguard-rules.pro"
             buildTypes {
                 getByName("release") {
-                    isMinifyEnabled = false
+                    isMinifyEnabled = true
                     proguardFiles(
                         getDefaultProguardFile("proguard-android-optimize.txt"),
                         proguardFile
@@ -47,12 +82,6 @@ internal fun Project.configureKotlinAndroid(
                 getByName("debug") {
                     isMinifyEnabled = false
                 }
-            }
-        }
-
-        project.tasks.withType(KotlinCompile::class.java).configureEach {
-            kotlinOptions {
-                jvmTarget = projectConfigs.javaVersion.toString()
             }
         }
 
@@ -79,19 +108,20 @@ internal fun Project.configureKotlinAndroid(
 
     // Use withType to workaround https://youtrack.jetbrains.com/issue/KT-55947
     tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            // Set JVM target to 11
-            jvmTarget = projectConfigs.javaVersion.toString()
-            // Treat all Kotlin warnings as errors (disabled by default)
-            // Override by setting warningsAsErrors=true in your ~/.gradle/gradle.properties
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(projectConfigs.javaVersion.toString()))
             val warningsAsErrors: String? by project
             allWarningsAsErrors = warningsAsErrors.toBoolean()
-            freeCompilerArgs = freeCompilerArgs + listOf(
-                "-opt-in=kotlin.RequiresOptIn",
-                // Enable experimental coroutines APIs, including Flow
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-opt-in=kotlinx.coroutines.FlowPreview",
-            )
+            freeCompilerArgs.apply {
+                addAll(
+                    listOf(
+                        "-opt-in=kotlin.RequiresOptIn",
+                        // Enable experimental coroutines APIs, including Flow
+                        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                        "-opt-in=kotlinx.coroutines.FlowPreview",
+                    )
+                )
+            }
         }
     }
 }
@@ -135,15 +165,15 @@ internal fun getVersionCodes(): ModuleVersionInfo {
     }
 }
 
-internal fun copyAppspirimentLibs(baseDir: File?) {
-    File(baseDir?.path + "/gradle/$appspirimentTomlName.versions.toml").run {
+internal fun Project.copyAppspirimentLibs() {
+    File(rootDir.path + "/gradle/$appspirimentTomlName.versions.toml").run {
         if (
             !exists() ||
             readLines().firstOrNull { it.contains("appspiriment =") }?.contains("\"$libVersion\"") != true
         ) {
             writeText(appspirimentTomlContents)
             if(appspirimentTomlContents != "libs"){
-                File(baseDir?.path + "/gradle/libs.versions.toml").let{ libFile ->
+                File(rootDir.path + "/gradle/libs.versions.toml").let{ libFile ->
                     libFile.readLines().toMutableList().apply {
                         appspirimentLibRefs.run {
                             versions.plus(plugins).forEach {
@@ -161,24 +191,6 @@ internal fun copyAppspirimentLibs(baseDir: File?) {
     }
 }
 
-
-internal fun Project.configureAndroidKotlinAndCompose(
-    commonExtension: CommonExtension<*,*,*,*,*, *>,
-    version: ModuleVersionInfo
-) {
-    configureKotlinAndroid(commonExtension, version)
-    commonExtension.apply {
-        buildFeatures {
-            compose = true
-        }
-    }
-
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + buildComposeMetricsParameters()
-        }
-    }
-}
 
 private fun Project.buildComposeMetricsParameters(): List<String> {
     val metricParameters = mutableListOf<String>()

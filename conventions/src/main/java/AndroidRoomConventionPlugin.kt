@@ -19,9 +19,9 @@ class AndroidRoomConventionPlugin : AndroidConventionPlugin() {
 
     override fun apply(target: Project) {
         with(target) {
-            super.applyPlugin(
+            applyPlugin(
                 target = target,
-                requiredPluginList = listOf("ksp-plugin"),
+                requireHilt = true,
                 requiredDependencies = requiredDependencyList
             )
 

@@ -1,57 +1,25 @@
-import com.appspiriment.conventions.Dependency
-import com.appspiriment.conventions.ImplType
 import com.appspiriment.conventions.androidLibrary
-import com.appspiriment.conventions.projectConfigs
-import com.appspiriment.conventions.configureKotlinAndroid
+import com.appspiriment.conventions.configureAndroid
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME as Impl
 
 open class AndroidLibraryConventionPlugin : AndroidConventionPlugin() {
 
     private val requiredPluginList = listOf(
         "google-android-library",
     )
-    private val requiredComposePluginList = listOf(
-        "kotlin-compose",
-        "kotlinx-serialization"
-    )
-
-    private val composeLibrary: List<Dependency> =
-        listOf(
-            Dependency(type = ImplType.BUDNDLE, config = Impl, aliases = listOf("android-compose")),
-            Dependency(
-                type = ImplType.DEPENDENCY, config = Impl, aliases = listOf(
-                    "lottie-compose", "hilt-compose-navigation"
-                )
-            ),
-            Dependency(
-                type = ImplType.PLATFORM,
-                config = Impl,
-                aliases = listOf("androidx-compose-bom")
-            )
-        )
 
     override fun apply(target: Project) {
-        with(target) {
-            project.extensions.create("configureLibrary", ConfigureLibrary::class.java)
-
-            extensions.configure(ConfigureLibrary::class.java) {
-                super.applyPlugin(
-                    target = target,
-                    requiredPluginList = requiredPluginList.run{
-                        if (isComposeLibrary) plus(requiredComposePluginList) else this
-                    },
-                    requiredDependencies = if (isComposeLibrary) composeLibrary else emptyList()
+        applyPlugin(
+            target = target,
+            requiredPluginList = requiredPluginList,
+        ) {
+            androidLibrary {
+                configureAndroid(
+                    commonExtension = this,
+                    version = versions,
+                    config = it
                 )
-
-                androidLibrary {
-                    configureKotlinAndroid(commonExtension = this, version = versions)
-                }
             }
         }
     }
 }
-
-open class ConfigureLibrary(
-    var isComposeLibrary: Boolean = false
-)

@@ -58,16 +58,18 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
                     }
                 }
                 val firstPluginLine = lines.indexOfFirst{ it.contains("io.github.appspiriment.project")
-                        || it.contains("appspirimentlibs.plugins.appspiriment.project")}
+                        || it.contains("appspirimentlibs.plugins.appspiriment.project")
+                        || it.contains("libs.plugins.appspiriment.project")}.takeIf { it >=0 } ?: 0
+
                 lines.removeAt(firstPluginLine)
                 lines.add( firstPluginLine, plugins.joinToString("\n"))
                 lines.add(firstPluginLine,"//    id(\"io.github.appspiriment.project\") version \"$libVersion\"")
 //                lines.add(firstPluginLine,"//    alias(appspirimentlibs.plugins.appspiriment.project)")
-                file.writeText(lines.joinToString("\n"))
+                file.writeText(lines.filter { it.isNotBlank() }.joinToString("\n"))
             }
         }
 
-        target.rootDir.absolutePath.let { File("$it/app/build.gradle.kts") }.let{file ->
+        target.rootDir.absolutePath.let { File("$it/app/build.gradle.kts") }.takeIf { it.exists() }?.let{file ->
             if(!file.readText().contains("plugins.appspiriment.application")) {
                 val appId = file.readLines().toMutableList()
                     .firstOrNull { line -> line.contains("applicationId") }?.split("=")?.get(1)
@@ -75,6 +77,6 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
                 file.writeText(getDefaultAppGradle(appId))
             }
         }
-        copyAppspirimentLibs(baseDir = target.buildscript.sourceFile?.parentFile)
+        target.copyAppspirimentLibs()
     }
 }

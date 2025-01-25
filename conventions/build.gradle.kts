@@ -116,7 +116,7 @@ gradlePlugin {
 
 tasks.register("updateLibVersion") {
 
-    File(project.parent?.projectDir?.path + "/gradle/appspirimentlibs.versions.toml").readLines().let {
+    File(project.rootDir.path + "/gradle/appspirimentlibs.versions.toml").readLines().let {
         fun List<String>.asString() = "listOf(\n${joinToString(",\n" )})"
         val versionRefs = it.subList(it.indexOf("[versions]") + 1, it.indexOf("[libraries]"))
             .filter { line -> !line.startsWith("#") && line.isNotBlank() }

@@ -30,6 +30,11 @@ fun Project.androidLibrary(block: LibraryExtension.() -> Unit){
         block()
     }
 }
+fun Project.appspirimentConfig(block: (AppspirimentExtension) -> Unit){
+    extensions.configure<AppspirimentExtension>{
+        block(this)
+    }
+}
 
 val Project.projectConfigs : ProjectConfiguration get() = projectConfiguration ?: this.requiredLibs.run {
     ProjectConfiguration(
@@ -37,7 +42,7 @@ val Project.projectConfigs : ProjectConfiguration get() = projectConfiguration ?
         targetSdk = getVersion("targetSdk").toInt(),
         compileSdk = getVersion("compileSdk").toInt(),
         javaVersion = getVersion("javaVersion").toInt().let{
-            JavaVersion.values()[it]
+            JavaVersion.toVersion(it)
         },
     )
 }.also { projectConfiguration = it }

@@ -7,9 +7,10 @@
 minSdk = "26"
 targetSdk = "35"
 compileSdk = "35"
-javaVersion = "17"
+javaVersion = "21"
 
 appspiriment = "LIBVERSION"
+appspirimentUtils = "0.0.3"
 
 #Classpath Version
 agp = "8.4.2"
@@ -86,11 +87,15 @@ room-common = { group = "androidx.room", name = "room-common", version.ref = "ro
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
+#Utils
+appspiriment-utils-dev = { group = "io.github.appspiriment", name = "utils-dev", version.ref="appspirimentUtils" }
+appspiriment-utils-prod = { group = "io.github.appspiriment", name = "utils-prod", version.ref="appspirimentUtils" }
+
 #Test Dependencies
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 junit-test = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4"}
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 [bundles]
@@ -118,6 +123,9 @@ android-test = [
     "androidx-junit",
     "junit-test",
     "androidx-espresso-core",
+]
+
+compose-test = [
     "androidx-ui-test-junit4",
     "androidx-ui-test-manifest",
 ]
@@ -141,4 +149,5 @@ appspiriment-project = { id = "io.github.appspiriment.project", version.ref = "a
 appspiriment-application = { id = "io.github.appspiriment.application", version.ref = "appspiriment" }
 appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }
 appspiriment-room = { id = "io.github.appspiriment.room", version.ref = "appspiriment" }
+appspiriment-publish = { id = "io.github.appspiriment.mavenpublish", version.ref = "appspiriment" }
 

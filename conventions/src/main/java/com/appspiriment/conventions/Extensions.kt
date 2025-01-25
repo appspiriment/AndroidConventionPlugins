@@ -89,10 +89,12 @@ enum class ImplType {
     BUDNDLE, DEPENDENCY, PROJECT, PLATFORM
 }
 
-
+const val EXTENSION_NAME = "appspiriment"
 open class AppspirimentExtension(
-    var pluginList: List<String> = emptyList(),
-    var dependencyList: List<Dependency> = emptyList()
+    var namespace : String = "com.example.application",
+    var minifyRelease: Boolean = true,
+    var enableHilt: Boolean = false,
+    var enableCompose: Boolean = false,
 )
 
 

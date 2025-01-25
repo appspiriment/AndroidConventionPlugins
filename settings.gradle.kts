@@ -27,9 +27,5 @@ dependencyResolutionManagement {
     }
 }
 
-//
-//plugins{
-//    id("com.appspiriment.settings") version "0.1.6"
-//}
 rootProject.name = "AppsUtils"
 include(":conventions")
