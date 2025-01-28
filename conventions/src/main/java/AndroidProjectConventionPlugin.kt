@@ -63,7 +63,12 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
 
                 lines.removeAt(firstPluginLine)
                 lines.add( firstPluginLine, plugins.joinToString("\n"))
-                lines.add(firstPluginLine,"//    id(\"io.github.appspiriment.project\") version \"$libVersion\"")
+
+                //To get the latest plugin, add + to the version and remove dev
+                val version = libVersion.let {
+                    it.split(".dev")[0] + ".+"
+                }
+                lines.add(firstPluginLine,"//    id(\"io.github.appspiriment.project\") version \"$version\"")
 //                lines.add(firstPluginLine,"//    alias(appspirimentlibs.plugins.appspiriment.project)")
                 file.writeText(lines.filter { it.isNotBlank() }.joinToString("\n"))
             }

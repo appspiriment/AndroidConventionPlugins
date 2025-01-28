@@ -95,6 +95,7 @@ open class AppspirimentExtension(
     var minifyRelease: Boolean = true,
     var enableHilt: Boolean = false,
     var enableCompose: Boolean = false,
+    var enableUtils: Boolean = true,
 )
 
 

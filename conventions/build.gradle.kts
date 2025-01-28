@@ -1,5 +1,8 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+import com.android.tools.r8.internal.ma
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.util.Properties
 
 plugins {
@@ -22,7 +25,7 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-val pluginMainVersion = libs.versions.appspiriment.get()
+val pluginMainVersion = getPluginDevVersion()
 
 dependencies {
     compileOnly(libs.android.gradle.plugin)
@@ -91,30 +94,8 @@ gradlePlugin {
         }
     }
 }
-//publishing {
-//    repositories {
-//        mavenLocal()
-//        maven {
-//            name = "AndroidConventionPlugins"
-//            /** Configure path of your package repository on Github
-//             *  Replace GITHUB_USERID with your/organisation Github userID and REPOSITORY with the repository name on GitHub
-//             */
-//            url = uri("https://maven.pkg.github.com/appspiriment/AndroidConventionPlugins")
-//
-//            credentials {
-//                val githubProperties = Properties()
-//                githubProperties.apply{
-//                    load(FileInputStream(rootProject.file("github.properties")))
-//                }.run{
-//                    username = get("gpr.usr")?.toString() ?: System.getenv("GPR_USER")
-//                    password = get("gpr.key")?.toString() ?: System.getenv("GPR_API_KEY")
-//                }
-//            }
-//        }
-//    }
-//}
 
-tasks.register("updateLibVersion") {
+tasks.register("updateLibFileVersion") {
 
     File(project.rootDir.path + "/gradle/appspirimentlibs.versions.toml").readLines().let {
         fun List<String>.asString() = "listOf(\n${joinToString(",\n" )})"
@@ -143,7 +124,7 @@ tasks.register("updateLibVersion") {
             }.asString()
 //
         val libsContent =
-            it.joinToString("\\n").replace("LIBVERSION", libs.versions.appspiriment.get())
+            it.joinToString("\\n").replace("LIBVERSION", getPluginDevVersion())
                 .replace("\"", "\\\"")
 
         File(project.projectDir.path + "/src/main/java/com/appspiriment/conventions/Constants.kt").run {
@@ -151,7 +132,7 @@ tasks.register("updateLibVersion") {
             writeText(
                 "import com.appspiriment.conventions.AppspirimentLibRef\nimport com.appspiriment.conventions.PluginRefs\nimport com.appspiriment.conventions.VersionRefs\n\n" +
                         "internal const val appspirimentTomlName = \"$baseAppspirimentTomlName\"\n\n" +
-                        "internal const val libVersion = \"${libs.versions.appspiriment.get()}\"\n\n" +
+                        "internal const val libVersion = \"${getPluginDevVersion()}\"\n\n" +
                         "internal const val appspirimentTomlContents = \"$libsContent\"\n\n" +
                         "internal fun getDefaultAppGradle(appId: String) = \"plugins {\\n    alias($baseAppspirimentTomlName.plugins.appspiriment.application)\\n}\\nandroidApplication {\\n    appId = \\\"\$appId\\\"\\n}\"\n\n" +
                         "internal val appspirimentLibRefs = AppspirimentLibRef(\n    versions= $versionRefs,\n    plugins= $pluginRefs,\n    libraries= $libraryRefs\n)"
@@ -159,4 +140,39 @@ tasks.register("updateLibVersion") {
         }
     }
 }
-tasks.first().finalizedBy(tasks.named("updateLibVersion").get())
+tasks.first().finalizedBy(tasks.named("updateLibFileVersion").get())
+
+
+
+tasks.register("updateVersionForPortal") {
+    File("pluginversion.properties").apply {
+        writeText(
+            "MAJOR=${libs.versions.appspiriment.get()}\n"
+        )
+    }
+}
+tasks.register("updateVersionForLocal") {
+    File("pluginversion.properties").apply {
+        val props = Properties()
+        props.load(FileInputStream(this))
+        props.getOrDefault("DEV",1).toString().toInt().let {
+           writeText("MAJOR=${libs.versions.appspiriment.get()}\nDEV=${it+1}")
+        }
+    }
+}
+
+internal fun getPluginDevVersion(): String {
+    val propsFile = File("pluginversion.properties")
+    if (propsFile.exists()) {
+        val props = Properties()
+        props.load(FileInputStream(propsFile))
+        val major = props["MAJOR"].toString()
+        val dev =  if(true && props.containsKey("DEV")) {
+            props["DEV"].toString().padStart(2, '0').let { ".dev-$it" }
+        } else null
+
+        return dev?.let{ "$major$it"} ?: major
+    } else {
+        throw FileNotFoundException("Could not read pluginversion.properties!")
+    }
+}

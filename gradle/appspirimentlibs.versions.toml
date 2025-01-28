@@ -10,7 +10,7 @@ compileSdk = "35"
 javaVersion = "21"
 
 appspiriment = "LIBVERSION"
-appspirimentUtils = "0.0.3"
+appspirimentUtils = "0.0.2"
 
 #Classpath Version
 agp = "8.4.2"
@@ -109,14 +109,18 @@ android-compose = [
     "androidx-activity-compose",
     "androidx-ui",
     "androidx-ui-graphics",
-    "androidx-ui-tooling",
-    "androidx-ui-tooling-preview",
     "androidx-material3",
     "androidx-compose-material-iconsExtended",
     "androidx-compose-navigation",
     "androidx-lifecycle-viewModelCompose",
     "androidx-lifecycle-runtimeCompose",
+    "androidx-ui-text-google-fonts",
     "kotlinx-serialize"
+]
+
+android-tooling = [
+    "androidx-ui-tooling",
+    "androidx-ui-tooling-preview",
 ]
 
 android-test = [
@@ -150,4 +154,3 @@ appspiriment-application = { id = "io.github.appspiriment.application", version.
 appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }
 appspiriment-room = { id = "io.github.appspiriment.room", version.ref = "appspiriment" }
 appspiriment-publish = { id = "io.github.appspiriment.mavenpublish", version.ref = "appspiriment" }
-

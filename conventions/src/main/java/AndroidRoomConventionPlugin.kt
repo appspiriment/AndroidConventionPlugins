@@ -1,3 +1,4 @@
+import com.appspiriment.conventions.AppspirimentExtension
 import com.appspiriment.conventions.Dependency
 import com.google.devtools.ksp.gradle.KspExtension
 import org.gradle.api.Project
@@ -16,6 +17,8 @@ class AndroidRoomConventionPlugin : AndroidConventionPlugin() {
         Dependency(config = Impl, aliases = listOf("room.ktx")),
         Dependency(config = "ksp", aliases = listOf("room.compiler")),
     )
+    override val Project.configurationLambda: (AppspirimentExtension) -> Unit
+        get() = {  }
 
     override fun apply(target: Project) {
         with(target) {
