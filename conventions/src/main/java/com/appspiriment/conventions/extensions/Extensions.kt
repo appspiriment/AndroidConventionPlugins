@@ -1,4 +1,4 @@
-package com.appspiriment.conventions
+package com.appspiriment.conventions.extensions
 
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.plugins.PluginManager
@@ -32,7 +32,7 @@ internal fun DependencyHandlerScope.implementDependency(
 ) {
     dependencyList.forEach {
         when (it.type) {
-            ImplType.BUDNDLE -> {
+            ImplType.BUNDLE -> {
                 implement(libs, it.config, it.aliases, isBundle = true)
             }
 
@@ -86,32 +86,12 @@ data class Dependency(
 )
 
 enum class ImplType {
-    BUDNDLE, DEPENDENCY, PROJECT, PLATFORM
+    BUNDLE, DEPENDENCY, PROJECT, PLATFORM
 }
 
 const val EXTENSION_NAME = "appspiriment"
 open class AppspirimentExtension(
-    var namespace : String = "com.example.application",
     var minifyRelease: Boolean = true,
-    var enableHilt: Boolean = false,
-    var enableCompose: Boolean = false,
     var enableUtils: Boolean = true,
 )
 
-
-open class PublishingExtension(
-    var groupId: String = "io.github.appspiriment",
-    var artifactId: String = "",
-    var version: String = "",
-    var name: String = "",
-    var description: String = "",
-    var url: String = "",
-    var licenseName: String = "The Apache License, Version 2.0",
-    var licenseUrl: String = "http://www.apache.org/licenses/LICENSE-2.0.txt",
-    var developerId: String = "appspiriment",
-    var developerName: String = "Appspiriment Labs",
-    var developerEmail: String = "appspiriment@gmail.com",
-    var scmConnection: String = "",
-    var scmDevConnection: String = "",
-    var scmUrl: String = "",
-)

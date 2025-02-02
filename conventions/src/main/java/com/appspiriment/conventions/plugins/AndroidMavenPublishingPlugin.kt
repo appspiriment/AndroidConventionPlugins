@@ -1,3 +1,5 @@
+package com.appspiriment.conventions.plugins
+
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

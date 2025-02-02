@@ -27,5 +27,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AppsUtils"
+rootProject.name = "Android Convention Plugins"
 include(":conventions")

@@ -1,4 +1,9 @@
-import com.appspiriment.conventions.copyAppspirimentLibs
+package com.appspiriment.conventions.plugins
+
+import appspirimentTomlName
+import com.appspiriment.conventions.extensions.copyAppspirimentLibs
+import getDefaultAppGradle
+import libVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.io.File
@@ -57,6 +62,11 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
                         lines.any {line-> line.contains(it)}
                     }
                 }
+
+                lines.indexOfFirst { it.contains("Current Appspiriment Plugin version:") }.takeIf{it > -1}?.let{
+                    lines.removeAt(it)
+                }
+
                 val firstPluginLine = lines.indexOfFirst{ it.contains("io.github.appspiriment.project")
                         || it.contains("appspirimentlibs.plugins.appspiriment.project")
                         || it.contains("libs.plugins.appspiriment.project")}.takeIf { it >=0 } ?: 0
@@ -69,6 +79,7 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
                     it.split(".dev")[0] + ".+"
                 }
                 lines.add(firstPluginLine,"//    id(\"io.github.appspiriment.project\") version \"$version\"")
+                lines.add(0,"//    Current Appspiriment Plugin version: \"$libVersion\"")
 //                lines.add(firstPluginLine,"//    alias(appspirimentlibs.plugins.appspiriment.project)")
                 file.writeText(lines.filter { it.isNotBlank() }.joinToString("\n"))
             }

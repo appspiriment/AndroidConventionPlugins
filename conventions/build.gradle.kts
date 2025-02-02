@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
-import com.android.tools.r8.internal.ma
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -44,6 +42,7 @@ gradlePlugin {
         version = pluginMainVersion
         website = "https://github.com/appspiriment/AndroidConventionPlugins"
         vcsUrl = "https://github.com/appspiriment/AndroidConventionPlugins"
+
         create("androidApplication") {
             id = "io.github.appspiriment.application"
             displayName = "Android Application Convention Plugin"
@@ -52,15 +51,23 @@ gradlePlugin {
                         "\n" +
                         "Warning: Modifying or changing the `appspirimentlibs.versions.toml` file manually can cause the plugin to fail, as it may get overwritten during plugin updates. For any version changes or dependency additions, it is recommended to update the default `libs.versions.toml` file instead."
             tags = listOf("android", "application", "conventions")
-            implementationClass = "AndroidApplicationConventionPlugin"
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidApplicationConventionPlugin"
         }
         create("androidLibrary") {
             id = "io.github.appspiriment.library"
             displayName = "Android Library Convention Plugin"
             description =
-                "This Gradle plugin configures an Android Library module with Hilt Dependency Injection (DI) using KSP (Kotlin Symbol Processing) and does not configure KAPT. It automatically applies the Hilt plugin to the library, enabling DI functionality with KSP. The plugin features a configurable extension, `configureLibrary`, which allows you to enable Compose capabilities by setting `isComposeLibrary` to true within the extension. Additionally, the plugin updates the `appspirimentlibs.versions.toml` file to manage and include the required dependencies for the library. This plugin streamlines the setup for Android libraries, providing seamless integration with Hilt (via KSP) and optional support for Compose."
+                "The Android Base Library Plugin is a foundational plugin designed to standardize the configuration of all your Android library modules. It automates the setup of core settings, ensuring consistency across your project. This plugin handles essential tasks such as applying the Android and Kotlin plugins, setting the compile and minimum SDK versions, configuring build types (debug/release), defining Java and Kotlin compilation options, and setting up default source sets and resource configurations. By using this plugin, you can significantly reduce boilerplate code and maintain a uniform structure across all your library modules."
             tags = listOf("android", "library", "conventions")
-            implementationClass = "AndroidLibraryConventionPlugin"
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidBaseLibraryConventionPlugin"
+        }
+        create("androidComposeHiltLibrary") {
+            id = "io.github.appspiriment.library.compose"
+            displayName = "Android Compose Library Convention Plugin"
+            description =
+                "The Android Compose Library Plugin streamlines the setup of Jetpack Compose and Hilt within your Android library modules. Leveraging the core configurations established by the Android Base Library Plugin, this plugin not only takes care of the fundamental settings like applying the Android and Kotlin plugins, setting SDK versions, and defining build types, but also automates the configuration of Compose build features, sets the correct Kotlin compiler extension version, and adds all the essential Compose dependencies. This includes UI, tooling, and testing libraries. Furthermore, it integrates Hilt by applying the necessary Hilt plugins and adding the required Hilt dependencies. By using this plugin, you can quickly enable Compose and Hilt in your library modules and ensure that all the necessary components are correctly configured, allowing you to start building beautiful and reactive UIs with ease while benefiting from dependency injection. It ensures that your library modules are consistently configured with the base settings, Hilt, and Compose."
+            tags = listOf("android", "library", "conventions")
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidComposeLibraryConventionPlugin"
         }
         create("androidProject") {
             id = "io.github.appspiriment.project"
@@ -72,7 +79,16 @@ gradlePlugin {
                         "\nYou just need to add the plugin with correct version to the root build.gradle.kts (don't use alias, add it directly at first) and sync.\n" +
                         "This plugin is ideal for setting up a new project with a clean configuration or updating plugin versions. To update versions, simply update the project plugin version and sync. Be aware that this plugin will remove all configurations in the app module's Gradle file, so ensure that no additional configurations are lost."
             tags = listOf("android", "Settings", "conventions")
-            implementationClass = "AndroidProjectConventionPlugin"
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidProjectConventionPlugin"
+        }
+
+        create("androidHilt") {
+            id = "io.github.appspiriment.hilt"
+            displayName = "Android Library Convention Plugin with Hilt"
+            description =
+                "The Android Hilt Convention Plugin simplifies the setup of Hilt, the dependency injection library, in your Android modules. It automatically applies the necessary Hilt plugins and dependencies, ensuring consistent Hilt configuration across your project. This plugin reduces boilerplate and streamlines the integration of Hilt into your Android development workflow."
+            tags = listOf("android", "hilt", "conventions")
+            implementationClass = "com.appspiriment.conventions.plugins.feature.AndroidHiltConventionPlugin"
         }
         create("androidRoom") {
             id = "io.github.appspiriment.room"
@@ -82,7 +98,7 @@ gradlePlugin {
                         "\n" +
                         "Once applied, the plugin configures the module with all the dependencies and settings needed to integrate Room seamlessly. This helps streamline the setup process, ensuring consistency and compatibility with the versions specified in your `appspirimentlibs.versions.toml` file."
             tags = listOf("android", "room", "conventions")
-            implementationClass = "AndroidRoomConventionPlugin"
+            implementationClass = "com.appspiriment.conventions.plugins.feature.AndroidRoomConventionPlugin"
         }
         create("androidPublish") {
             id = "io.github.appspiriment.mavenpublish"
@@ -90,10 +106,12 @@ gradlePlugin {
             description =
                 "This plugin simplifies the setup of library modules to be published to Maven Central, it still need to be configured. This plugin utilises 'vanniktech maven publish' plugin."
             tags = listOf("android", "publish")
-            implementationClass = "AndroidMavenPublishingPlugin"
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidMavenPublishingPlugin"
         }
     }
 }
+
+
 
 tasks.register("updateLibFileVersion") {
 
@@ -127,10 +145,10 @@ tasks.register("updateLibFileVersion") {
             it.joinToString("\\n").replace("LIBVERSION", getPluginDevVersion())
                 .replace("\"", "\\\"")
 
-        File(project.projectDir.path + "/src/main/java/com/appspiriment/conventions/Constants.kt").run {
+        File(project.projectDir.path + "/src/main/java/com/appspiriment/conventions/extensions/Constants.kt").run {
             val baseAppspirimentTomlName = "appspirimentlibs"
             writeText(
-                "import com.appspiriment.conventions.AppspirimentLibRef\nimport com.appspiriment.conventions.PluginRefs\nimport com.appspiriment.conventions.VersionRefs\n\n" +
+                "import com.appspiriment.conventions.extensions.AppspirimentLibRef\n\n" +
                         "internal const val appspirimentTomlName = \"$baseAppspirimentTomlName\"\n\n" +
                         "internal const val libVersion = \"${getPluginDevVersion()}\"\n\n" +
                         "internal const val appspirimentTomlContents = \"$libsContent\"\n\n" +
@@ -146,17 +164,21 @@ tasks.first().finalizedBy(tasks.named("updateLibFileVersion").get())
 
 tasks.register("updateVersionForPortal") {
     File("pluginversion.properties").apply {
-        writeText(
-            "MAJOR=${libs.versions.appspiriment.get()}\n"
-        )
+        val props = Properties()
+        props.load(FileInputStream(this))
+        props.getOrDefault("LASTDEV",1).let {
+            writeText(
+                "MAJOR=${libs.versions.appspiriment.get()}\nLASTDEV=$it"
+            )
+        }
     }
 }
 tasks.register("updateVersionForLocal") {
     File("pluginversion.properties").apply {
         val props = Properties()
         props.load(FileInputStream(this))
-        props.getOrDefault("DEV",1).toString().toInt().let {
-           writeText("MAJOR=${libs.versions.appspiriment.get()}\nDEV=${it+1}")
+        props.getOrDefault("DEV",props.getOrDefault("LASTDEV",1)).toString().toInt().inc().let {
+            writeText("MAJOR=${libs.versions.appspiriment.get()}\nDEV=${it}\nLASTDEV=$it")
         }
     }
 }
@@ -167,11 +189,11 @@ internal fun getPluginDevVersion(): String {
         val props = Properties()
         props.load(FileInputStream(propsFile))
         val major = props["MAJOR"].toString()
-        val dev =  if(true && props.containsKey("DEV")) {
+        val dev = if (true && props.containsKey("DEV")) {
             props["DEV"].toString().padStart(2, '0').let { ".dev-$it" }
         } else null
 
-        return dev?.let{ "$major$it"} ?: major
+        return dev?.let { "$major$it" } ?: major
     } else {
         throw FileNotFoundException("Could not read pluginversion.properties!")
     }

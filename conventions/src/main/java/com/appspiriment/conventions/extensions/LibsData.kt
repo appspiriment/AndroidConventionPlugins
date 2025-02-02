@@ -1,4 +1,4 @@
-package com.appspiriment.conventions
+package com.appspiriment.conventions.extensions
 
 data class AppspirimentLibRef(
     val versions: List<String>,

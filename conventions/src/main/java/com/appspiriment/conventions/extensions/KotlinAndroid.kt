@@ -1,13 +1,11 @@
-package com.appspiriment.conventions
+package com.appspiriment.conventions.extensions
 
 import appspirimentLibRefs
 import appspirimentTomlContents
 import appspirimentTomlName
 import com.android.build.api.dsl.CommonExtension
-import com.android.tools.r8.internal.co
 import libVersion
 import org.gradle.api.Project
-import org.gradle.internal.impldep.com.jcraft.jsch.ConfigRepository.defaultConfig
 import org.gradle.kotlin.dsl.assign
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
@@ -20,37 +18,7 @@ import java.util.Properties
 
 internal fun Project.configureAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
-    version: ModuleVersionInfo,
-    config:AppspirimentExtension
-){
-    commonExtension.run{
-        configureKotlinAndroid(commonExtension = commonExtension, version = version)
-        commonExtension.apply {
-            buildFeatures {
-                compose = config.enableCompose
-            }
-        }
-        if (config.enableCompose) {
-            tasks.withType<KotlinCompile>().configureEach {
-                compilerOptions {
-                    freeCompilerArgs.apply {
-                        addAll(buildComposeMetricsParameters())
-                    }
-                }
-            }
-        }
-        defaultConfig.apply {
-            namespace = config.namespace
-            buildTypes {
-                getByName("release") {
-                    isMinifyEnabled = config.minifyRelease
-                }
-            }
-        }
-    }
-}
-private fun Project.configureKotlinAndroid(
-    commonExtension: CommonExtension<*, *, *, *, *, *>,
+    enableCompose: Boolean,
     version: ModuleVersionInfo
 ) {
     commonExtension.apply {
@@ -63,11 +31,6 @@ private fun Project.configureKotlinAndroid(
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             vectorDrawables {
                 useSupportLibrary = true
-            }
-
-            compileOptions {
-                sourceCompatibility = projectConfigs.javaVersion
-                targetCompatibility = projectConfigs.javaVersion
             }
 
             val proguardFile = "proguard-rules.pro"
@@ -86,10 +49,19 @@ private fun Project.configureKotlinAndroid(
         }
 
         buildFeatures {
+            compose = enableCompose
             buildConfig = true
         }
-        //configureFlavors(this)
-        //configureGradleManagedDevices(this)
+        if (enableCompose) {
+            tasks.withType<KotlinCompile>().configureEach {
+                compilerOptions {
+                    freeCompilerArgs.apply {
+                        addAll(buildComposeMetricsParameters())
+                    }
+                }
+            }
+        }
+
         packaging {
             resources {
                 resources.excludes.add("META-INF/*")
@@ -97,12 +69,10 @@ private fun Project.configureKotlinAndroid(
         }
 
         compileOptions {
-
             sourceCompatibility = projectConfigs.javaVersion
             targetCompatibility = projectConfigs.javaVersion
             isCoreLibraryDesugaringEnabled = false
         }
-
     }
 
 

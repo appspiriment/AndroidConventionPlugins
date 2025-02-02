@@ -118,21 +118,16 @@ android-compose = [
     "kotlinx-serialize"
 ]
 
-android-tooling = [
-    "androidx-ui-tooling",
-    "androidx-ui-tooling-preview",
+unit-test = [
+    "junit-test",
 ]
 
 android-test = [
     "androidx-junit",
-    "junit-test",
     "androidx-espresso-core",
+    "androidx-ui-test-junit4",
 ]
 
-compose-test = [
-    "androidx-ui-test-junit4",
-    "androidx-ui-test-manifest",
-]
 
 [plugins]
 google-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -152,5 +147,7 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 appspiriment-project = { id = "io.github.appspiriment.project", version.ref = "appspiriment" }
 appspiriment-application = { id = "io.github.appspiriment.application", version.ref = "appspiriment" }
 appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }
+appspiriment-compose-library = { id = "io.github.appspiriment.library.compose", version.ref = "appspiriment" }
+appspiriment-hilt = { id = "io.github.appspiriment.hilt", version.ref = "appspiriment" }
 appspiriment-room = { id = "io.github.appspiriment.room", version.ref = "appspiriment" }
 appspiriment-publish = { id = "io.github.appspiriment.mavenpublish", version.ref = "appspiriment" }
