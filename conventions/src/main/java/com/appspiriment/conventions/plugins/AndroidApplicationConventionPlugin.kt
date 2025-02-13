@@ -8,17 +8,15 @@ open class AndroidApplicationConventionPlugin : AndroidConventionPlugin() {
 
     private val requiredPluginList = listOf(
         "google-android-application",
-        "appspiriment-hilt",
-        "kotlinx-serialization",
     )
-    override val Project.commonExtension: CommonExtension<*, *, *, *, *, *>
-        get() = extensions.getByType(
+    override val Project.commonExtension get() = extensions.getByType(
             ApplicationExtension::class.java
         )
 
     override fun apply(target: Project) {
         applyPlugin(
             target = target,
+            requireHilt = true,
             requireCompose = true,
             requiredPluginList = requiredPluginList,
         )

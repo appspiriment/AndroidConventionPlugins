@@ -26,6 +26,7 @@ internal fun Project.configureAndroid(
 
         defaultConfig.apply {
             minSdk = projectConfigs.minSdk
+
             buildConfigField("int", "VERSIONCODE", "${version.releaseCode}")
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -51,15 +52,6 @@ internal fun Project.configureAndroid(
         buildFeatures {
             compose = enableCompose
             buildConfig = true
-        }
-        if (enableCompose) {
-            tasks.withType<KotlinCompile>().configureEach {
-                compilerOptions {
-                    freeCompilerArgs.apply {
-                        addAll(buildComposeMetricsParameters())
-                    }
-                }
-            }
         }
 
         packaging {
@@ -162,7 +154,7 @@ internal fun Project.copyAppspirimentLibs() {
 }
 
 
-private fun Project.buildComposeMetricsParameters(): List<String> {
+internal fun Project.buildComposeMetricsParameters(): List<String> {
     val metricParameters = mutableListOf<String>()
     val enableMetricsProvider = project.providers.gradleProperty("enableComposeCompilerMetrics")
     val enableMetrics = (enableMetricsProvider.orNull == "true")

@@ -91,7 +91,7 @@ enum class ImplType {
 
 const val EXTENSION_NAME = "appspiriment"
 open class AppspirimentExtension(
-    var minifyRelease: Boolean = true,
     var enableUtils: Boolean = true,
+    val enableMinify: Boolean = false,
 )
 

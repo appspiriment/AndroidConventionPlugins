@@ -53,22 +53,6 @@ gradlePlugin {
             tags = listOf("android", "application", "conventions")
             implementationClass = "com.appspiriment.conventions.plugins.AndroidApplicationConventionPlugin"
         }
-        create("androidLibrary") {
-            id = "io.github.appspiriment.library"
-            displayName = "Android Library Convention Plugin"
-            description =
-                "The Android Base Library Plugin is a foundational plugin designed to standardize the configuration of all your Android library modules. It automates the setup of core settings, ensuring consistency across your project. This plugin handles essential tasks such as applying the Android and Kotlin plugins, setting the compile and minimum SDK versions, configuring build types (debug/release), defining Java and Kotlin compilation options, and setting up default source sets and resource configurations. By using this plugin, you can significantly reduce boilerplate code and maintain a uniform structure across all your library modules."
-            tags = listOf("android", "library", "conventions")
-            implementationClass = "com.appspiriment.conventions.plugins.AndroidBaseLibraryConventionPlugin"
-        }
-        create("androidComposeHiltLibrary") {
-            id = "io.github.appspiriment.library.compose"
-            displayName = "Android Compose Library Convention Plugin"
-            description =
-                "The Android Compose Library Plugin streamlines the setup of Jetpack Compose and Hilt within your Android library modules. Leveraging the core configurations established by the Android Base Library Plugin, this plugin not only takes care of the fundamental settings like applying the Android and Kotlin plugins, setting SDK versions, and defining build types, but also automates the configuration of Compose build features, sets the correct Kotlin compiler extension version, and adds all the essential Compose dependencies. This includes UI, tooling, and testing libraries. Furthermore, it integrates Hilt by applying the necessary Hilt plugins and adding the required Hilt dependencies. By using this plugin, you can quickly enable Compose and Hilt in your library modules and ensure that all the necessary components are correctly configured, allowing you to start building beautiful and reactive UIs with ease while benefiting from dependency injection. It ensures that your library modules are consistently configured with the base settings, Hilt, and Compose."
-            tags = listOf("android", "library", "conventions")
-            implementationClass = "com.appspiriment.conventions.plugins.AndroidComposeLibraryConventionPlugin"
-        }
         create("androidProject") {
             id = "io.github.appspiriment.project"
             displayName = "Android Project Root Convention Plugin"
@@ -82,14 +66,6 @@ gradlePlugin {
             implementationClass = "com.appspiriment.conventions.plugins.AndroidProjectConventionPlugin"
         }
 
-        create("androidHilt") {
-            id = "io.github.appspiriment.hilt"
-            displayName = "Android Library Convention Plugin with Hilt"
-            description =
-                "The Android Hilt Convention Plugin simplifies the setup of Hilt, the dependency injection library, in your Android modules. It automatically applies the necessary Hilt plugins and dependencies, ensuring consistent Hilt configuration across your project. This plugin reduces boilerplate and streamlines the integration of Hilt into your Android development workflow."
-            tags = listOf("android", "hilt", "conventions")
-            implementationClass = "com.appspiriment.conventions.plugins.feature.AndroidHiltConventionPlugin"
-        }
         create("androidRoom") {
             id = "io.github.appspiriment.room"
             displayName = "Android Room Convention Plugin"
@@ -107,6 +83,41 @@ gradlePlugin {
                 "This plugin simplifies the setup of library modules to be published to Maven Central, it still need to be configured. This plugin utilises 'vanniktech maven publish' plugin."
             tags = listOf("android", "publish")
             implementationClass = "com.appspiriment.conventions.plugins.AndroidMavenPublishingPlugin"
+        }
+
+
+        //Library Group
+        create("androidBaseLibrary") {
+            id = "io.github.appspiriment.library-base"
+            displayName = "Android Library Convention Plugin"
+            description =
+                "The Android Base Library Plugin is a foundational plugin designed to standardize the configuration of all your Android library modules. It automates the setup of core settings, ensuring consistency across your project. This plugin handles essential tasks such as applying the Android and Kotlin plugins, setting the compile and minimum SDK versions, configuring build types (debug/release), defining Java and Kotlin compilation options, and setting up default source sets and resource configurations. By using this plugin, you can significantly reduce boilerplate code and maintain a uniform structure across all your library modules."
+            tags = listOf("android", "library", "conventions")
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidBaseLibraryConventionPlugin"
+        }
+        create("androidHiltLibrary") {
+            id = "io.github.appspiriment.library-hilt"
+            displayName = "Android Library Convention Plugin with Hilt"
+            description =
+                "The Android Compose Library Plugin streamlines the setup of Jetpack Compose and Hilt within your Android library modules. Leveraging the core configurations established by the Android Base Library Plugin, this plugin not only takes care of the fundamental settings like applying the Android and Kotlin plugins, setting SDK versions, and defining build types, but also automates the configuration of Compose build features, sets the correct Kotlin compiler extension version, and adds all the essential Compose dependencies. This includes UI, tooling, and testing libraries. Furthermore, it integrates Hilt by applying the necessary Hilt plugins and adding the required Hilt dependencies. By using this plugin, you can quickly enable Compose and Hilt in your library modules and ensure that all the necessary components are correctly configured, allowing you to start building beautiful and reactive UIs with ease while benefiting from dependency injection. It ensures that your library modules are consistently configured with the base settings, Hilt, and Compose."
+            tags = listOf("android", "library", "conventions")
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidHiltLibraryConventionPlugin"
+        }
+        create("androidComposeLibrary") {
+            id = "io.github.appspiriment.library-compose"
+            displayName = "Android Library Convention Plugin with Hilt"
+            description =
+                "The Android Compose Library Plugin streamlines the setup of Jetpack Compose and Hilt within your Android library modules. Leveraging the core configurations established by the Android Base Library Plugin, this plugin not only takes care of the fundamental settings like applying the Android and Kotlin plugins, setting SDK versions, and defining build types, but also automates the configuration of Compose build features, sets the correct Kotlin compiler extension version, and adds all the essential Compose dependencies. This includes UI, tooling, and testing libraries. Furthermore, it integrates Hilt by applying the necessary Hilt plugins and adding the required Hilt dependencies. By using this plugin, you can quickly enable Compose and Hilt in your library modules and ensure that all the necessary components are correctly configured, allowing you to start building beautiful and reactive UIs with ease while benefiting from dependency injection. It ensures that your library modules are consistently configured with the base settings, Hilt, and Compose."
+            tags = listOf("android", "library", "conventions")
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidComposeLibraryConventionPlugin"
+        }
+        create("androidLibrary") {
+            id = "io.github.appspiriment.library"
+            displayName = "Android Library Convention Plugin with Hilt"
+            description =
+                "The Android Compose Library Plugin streamlines the setup of Jetpack Compose and Hilt within your Android library modules. Leveraging the core configurations established by the Android Base Library Plugin, this plugin not only takes care of the fundamental settings like applying the Android and Kotlin plugins, setting SDK versions, and defining build types, but also automates the configuration of Compose build features, sets the correct Kotlin compiler extension version, and adds all the essential Compose dependencies. This includes UI, tooling, and testing libraries. Furthermore, it integrates Hilt by applying the necessary Hilt plugins and adding the required Hilt dependencies. By using this plugin, you can quickly enable Compose and Hilt in your library modules and ensure that all the necessary components are correctly configured, allowing you to start building beautiful and reactive UIs with ease while benefiting from dependency injection. It ensures that your library modules are consistently configured with the base settings, Hilt, and Compose."
+            tags = listOf("android", "library", "conventions")
+            implementationClass = "com.appspiriment.conventions.plugins.AndroidHiltComposeLibraryConventionPlugin"
         }
     }
 }

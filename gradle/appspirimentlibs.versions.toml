@@ -10,7 +10,8 @@ compileSdk = "35"
 javaVersion = "21"
 
 appspiriment = "LIBVERSION"
-appspirimentUtils = "0.0.2"
+appspirimentUtils = "0.0.5"
+appspirimentComposeUtils = "0.0.2"
 
 #Classpath Version
 agp = "8.4.2"
@@ -31,15 +32,14 @@ googleServices = "4.4.2"
 #Android Compose  Dep Version
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
-composeBom = "2024.12.01"
+composeBom = "2025.01.01"
 composeNavigation = "2.8.5"
 composeHiltNavigation = "1.2.0"
-composeMaterial3 = "1.3.1"
-material3 = "1.7.6"
 lifecycle = "2.8.7"
 
 #Tools
 lottie = "6.0.0"
+firebaseBom = "33.9.0"
 
 #Test Versions
 junit = "4.13.2"
@@ -47,7 +47,6 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
 firebasecrashlyticsplugin = "3.0.2"
-uiTextGoogleFonts = "1.7.6"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,20 +56,30 @@ multidex = { module = "androidx.multidex:multidex", version.ref = "multidex" }
 
 
 #Compose Dependecies
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+#androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "composeMaterial3" }
-androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeMaterial3" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended"}
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
+
+#Non-BOM Compose
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 kotlinx-serialize = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinserialize" }
 
-androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+#Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-database-ktx = { module = "com.google.firebase:firebase-database-ktx" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
+firebase-config-ktx = { module = "com.google.firebase:firebase-config-ktx" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics" }
 
 #Hilt Dependencies
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -90,6 +99,7 @@ lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "
 #Utils
 appspiriment-utils-dev = { group = "io.github.appspiriment", name = "utils-dev", version.ref="appspirimentUtils" }
 appspiriment-utils-prod = { group = "io.github.appspiriment", name = "utils-prod", version.ref="appspirimentUtils" }
+appspiriment-compose = { group = "io.github.appspiriment", name = "compose-utils", version.ref="appspirimentComposeUtils" }
 
 #Test Dependencies
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -107,15 +117,18 @@ android-base = [
 ]
 android-compose = [
     "androidx-activity-compose",
+    "androidx-compose-foundation",
     "androidx-ui",
-    "androidx-ui-graphics",
+    "androidx-ui-tooling-preview",
     "androidx-material3",
     "androidx-compose-material-iconsExtended",
+    "androidx-ui-text-google-fonts",
     "androidx-compose-navigation",
     "androidx-lifecycle-viewModelCompose",
     "androidx-lifecycle-runtimeCompose",
-    "androidx-ui-text-google-fonts",
-    "kotlinx-serialize"
+    "kotlinx-serialize",
+    "lottie-compose",
+
 ]
 
 unit-test = [
@@ -125,9 +138,7 @@ unit-test = [
 android-test = [
     "androidx-junit",
     "androidx-espresso-core",
-    "androidx-ui-test-junit4",
 ]
-
 
 [plugins]
 google-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -147,7 +158,9 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 appspiriment-project = { id = "io.github.appspiriment.project", version.ref = "appspiriment" }
 appspiriment-application = { id = "io.github.appspiriment.application", version.ref = "appspiriment" }
 appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }
-appspiriment-compose-library = { id = "io.github.appspiriment.library.compose", version.ref = "appspiriment" }
+appspiriment-library-compose = { id = "io.github.appspiriment.library-compose", version.ref = "appspiriment" }
+appspiriment-library-hilt = { id = "io.github.appspiriment.library-hilt", version.ref = "appspiriment" }
+appspiriment-library-base = { id = "io.github.appspiriment.library-base", version.ref = "appspiriment" }
 appspiriment-hilt = { id = "io.github.appspiriment.hilt", version.ref = "appspiriment" }
 appspiriment-room = { id = "io.github.appspiriment.room", version.ref = "appspiriment" }
 appspiriment-publish = { id = "io.github.appspiriment.mavenpublish", version.ref = "appspiriment" }
