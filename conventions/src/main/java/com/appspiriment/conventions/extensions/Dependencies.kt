@@ -48,14 +48,15 @@ val baseDependencies: List<Dependency> get() =
 
 val utilDependencies: List<Dependency> get() = listOf(
     Dependency(
-        type = ImplType.DEPENDENCY,
-        config = "debugImplementation",
-        aliases = listOf("appspiriment-utils-dev")
+        aliases = listOf("appspiriment-utils")
     ),
     Dependency(
-        type = ImplType.DEPENDENCY,
+        config = "debugImplementation",
+        aliases = listOf("appspiriment-logutils-dev")
+    ),
+    Dependency(
         config = "releaseImplementation",
-        aliases = listOf("appspiriment-utils-prod")
+        aliases = listOf("appspiriment-logutils-prod")
     ),
 )
 

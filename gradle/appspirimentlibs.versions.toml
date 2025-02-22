@@ -10,8 +10,10 @@ compileSdk = "35"
 javaVersion = "21"
 
 appspiriment = "LIBVERSION"
-appspirimentUtils = "0.0.5"
+appspirimentLogUtils = "0.0.1"
+appspirimentUtils = "0.0.1"
 appspirimentComposeUtils = "0.0.2"
+appspirimentUpdateUtils = "0.0.1"
 
 #Classpath Version
 agp = "8.4.2"
@@ -97,9 +99,11 @@ lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
 #Utils
-appspiriment-utils-dev = { group = "io.github.appspiriment", name = "utils-dev", version.ref="appspirimentUtils" }
-appspiriment-utils-prod = { group = "io.github.appspiriment", name = "utils-prod", version.ref="appspirimentUtils" }
+appspiriment-logutils-dev = { group = "io.github.appspiriment", name = "logutils-dev", version.ref="appspirimentLogUtils" }
+appspiriment-logutils-prod = { group = "io.github.appspiriment", name = "logutils-prod", version.ref="appspirimentLogUtils" }
+appspiriment-utils = { group = "io.github.appspiriment", name = "utils", version.ref="appspirimentUtils" }
 appspiriment-compose = { group = "io.github.appspiriment", name = "compose-utils", version.ref="appspirimentComposeUtils" }
+appspiriment-update = { group = "io.github.appspiriment", name = "update-utils", version.ref="appspirimentUpdateUtils" }
 
 #Test Dependencies
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

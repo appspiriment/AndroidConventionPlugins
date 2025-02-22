@@ -1,6 +1,7 @@
 package com.appspiriment.conventions.extensions
 
 import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
 import org.gradle.api.plugins.PluginManager
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.project
@@ -81,7 +82,7 @@ internal fun DependencyHandlerScope.implement(
 
 data class Dependency(
     val type: ImplType = ImplType.DEPENDENCY,
-    val config: String,
+    val config: String = IMPLEMENTATION_CONFIGURATION_NAME,
     val aliases: List<String>,
 )
 
@@ -92,6 +93,6 @@ enum class ImplType {
 const val EXTENSION_NAME = "appspiriment"
 open class AppspirimentExtension(
     var enableUtils: Boolean = true,
-    val enableMinify: Boolean = false,
+    var enableMinify: Boolean = false,
 )
 

@@ -7,7 +7,6 @@ import com.appspiriment.conventions.extensions.EXTENSION_NAME
 import com.appspiriment.conventions.extensions.applyPluginFromLibs
 import com.appspiriment.conventions.extensions.baseDependencies
 import com.appspiriment.conventions.extensions.basePluginList
-import com.appspiriment.conventions.extensions.buildComposeMetricsParameters
 import com.appspiriment.conventions.extensions.composeDependencies
 import com.appspiriment.conventions.extensions.composePluginList
 import com.appspiriment.conventions.extensions.configureAndroid
@@ -21,8 +20,6 @@ import com.appspiriment.conventions.extensions.utilDependencies
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 abstract class AndroidConventionPlugin : Plugin<Project> {
     private val versions = getVersionCodes()
