@@ -200,7 +200,7 @@ internal fun getPluginDevVersion(): String {
         val props = Properties()
         props.load(FileInputStream(propsFile))
         val major = props["MAJOR"].toString()
-        val dev = if (true && props.containsKey("DEV")) {
+        val dev = if (false && props.containsKey("DEV")) {
             props["DEV"].toString().padStart(2, '0').let { ".dev-$it" }
         } else null
 

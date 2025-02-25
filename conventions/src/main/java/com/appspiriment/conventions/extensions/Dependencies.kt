@@ -65,12 +65,10 @@ val composeDependencies: List<Dependency> get() =
     listOf(
         Dependency(
             type = ImplType.PLATFORM,
-            config = IMPLEMENTATION_CONFIGURATION_NAME,
             aliases = listOf("androidx-compose-bom")
         ),
         Dependency(
             type = ImplType.BUNDLE,
-            config = IMPLEMENTATION_CONFIGURATION_NAME,
             aliases = listOf("android-compose")
         ),
         Dependency(
@@ -90,9 +88,8 @@ val composeDependencies: List<Dependency> get() =
         ),
         Dependency(
             type = ImplType.DEPENDENCY,
-            config = IMPLEMENTATION_CONFIGURATION_NAME,
             aliases = listOf(
-                "lottie-compose", "hilt-compose-navigation"
+                "lottie-compose", "hilt-compose-navigation", "appspiriment-compose"
             )
         ),
     )

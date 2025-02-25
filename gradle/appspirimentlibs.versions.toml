@@ -12,7 +12,7 @@ javaVersion = "21"
 appspiriment = "LIBVERSION"
 appspirimentLogUtils = "0.0.1"
 appspirimentUtils = "0.0.1"
-appspirimentComposeUtils = "0.0.2"
+appspirimentComposeUtils = "0.0.1"
 appspirimentUpdateUtils = "0.0.1"
 
 #Classpath Version
