@@ -10,6 +10,10 @@ plugins {
     `version-catalog`
 }
 
+val pluginVersion = "0.0.7"
+val isDevBuild = false
+
+
 val javaVersion = libs.versions.javaVersion.get()
 java {
     JavaVersion.toVersion(javaVersion).let {
@@ -76,15 +80,6 @@ gradlePlugin {
             tags = listOf("android", "room", "conventions")
             implementationClass = "com.appspiriment.conventions.plugins.feature.AndroidRoomConventionPlugin"
         }
-        create("androidPublish") {
-            id = "io.github.appspiriment.mavenpublish"
-            displayName = "Android Maven Publish Plugin"
-            description =
-                "This plugin simplifies the setup of library modules to be published to Maven Central, it still need to be configured. This plugin utilises 'vanniktech maven publish' plugin."
-            tags = listOf("android", "publish")
-            implementationClass = "com.appspiriment.conventions.plugins.AndroidMavenPublishingPlugin"
-        }
-
 
         //Library Group
         create("androidBaseLibrary") {
@@ -163,7 +158,7 @@ tasks.register("updateLibFileVersion") {
                         "internal const val appspirimentTomlName = \"$baseAppspirimentTomlName\"\n\n" +
                         "internal const val libVersion = \"${getPluginDevVersion()}\"\n\n" +
                         "internal const val appspirimentTomlContents = \"$libsContent\"\n\n" +
-                        "internal fun getDefaultAppGradle(appId: String) = \"plugins {\\n    alias($baseAppspirimentTomlName.plugins.appspiriment.application)\\n}\\nandroidApplication {\\n    appId = \\\"\$appId\\\"\\n}\"\n\n" +
+                        "internal fun getDefaultAppGradle() = \"plugins {\\n    alias($baseAppspirimentTomlName.plugins.appspiriment.application)\\n}\\n\\nandroid {\\n    namespace = \\\"com.example.app\\\"\\n    defaultConfig {\\n        applicationId = \\\"com.example.app\\\"\\n    }\\n}\\n\"\n\n" +
                         "internal val appspirimentLibRefs = AppspirimentLibRef(\n    versions= $versionRefs,\n    plugins= $pluginRefs,\n    libraries= $libraryRefs\n)"
             )
         }
@@ -179,7 +174,7 @@ tasks.register("updateVersionForPortal") {
         props.load(FileInputStream(this))
         props.getOrDefault("LASTDEV",1).let {
             writeText(
-                "MAJOR=${libs.versions.appspiriment.get()}\nLASTDEV=$it"
+                "MAJOR=${pluginVersion}\nLASTDEV=$it"
             )
         }
     }
@@ -189,7 +184,7 @@ tasks.register("updateVersionForLocal") {
         val props = Properties()
         props.load(FileInputStream(this))
         props.getOrDefault("DEV",props.getOrDefault("LASTDEV",1)).toString().toInt().inc().let {
-            writeText("MAJOR=${libs.versions.appspiriment.get()}\nDEV=${it}\nLASTDEV=$it")
+            writeText("MAJOR=${pluginVersion}\nDEV=${it}\nLASTDEV=$it")
         }
     }
 }
@@ -200,7 +195,7 @@ internal fun getPluginDevVersion(): String {
         val props = Properties()
         props.load(FileInputStream(propsFile))
         val major = props["MAJOR"].toString()
-        val dev = if (false && props.containsKey("DEV")) {
+        val dev = if (isDevBuild && props.containsKey("DEV")) {
             props["DEV"].toString().padStart(2, '0').let { ".dev-$it" }
         } else null
 

@@ -11,44 +11,45 @@ javaVersion = "21"
 
 appspiriment = "LIBVERSION"
 appspirimentLogUtils = "0.0.1"
-appspirimentUtils = "0.0.1"
-appspirimentComposeUtils = "0.0.1"
+appspirimentUtils = "0.0.3"
+appspirimentComposeUtils = "0.0.3"
 appspirimentUpdateUtils = "0.0.1"
 
 #Classpath Version
-agp = "8.4.2"
+agp = "8.7.3"
 kotlin = "2.0.0"
-ksp = "2.0.0-1.0.21"
+ksp = "2.0.0-1.0.23"
 hilt = "2.49"
 kotlinserializeplugin = "2.0.0"
 #Classpath Version End
 
-coreKtx = "1.15.0"
-room = "2.6.1"
+coreKtx = "1.16.0"
+room = "2.7.1"
 multidex = "2.0.1"
 kotlinserialize = "1.6.3"
-kotlinxCoroutines = "1.7.3"
+kotlinxCoroutines = "1.10.1"
 
 googleServices = "4.4.2"
 
 #Android Compose  Dep Version
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2025.01.01"
-composeNavigation = "2.8.5"
+lifecycleRuntimeKtx = "2.9.0"
+activityCompose = "1.10.1"
+composeBom = "2025.05.00"
+composeNavigation = "2.9.0"
 composeHiltNavigation = "1.2.0"
-lifecycle = "2.8.7"
+lifecycle = "2.9.0"
 
 #Tools
 lottie = "6.0.0"
-firebaseBom = "33.9.0"
+firebaseBom = "33.13.0"
 
 #Test Versions
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
-firebasecrashlyticsplugin = "3.0.2"
+firebasecrashlyticsplugin = "3.0.3"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -165,6 +166,4 @@ appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "a
 appspiriment-library-compose = { id = "io.github.appspiriment.library-compose", version.ref = "appspiriment" }
 appspiriment-library-hilt = { id = "io.github.appspiriment.library-hilt", version.ref = "appspiriment" }
 appspiriment-library-base = { id = "io.github.appspiriment.library-base", version.ref = "appspiriment" }
-appspiriment-hilt = { id = "io.github.appspiriment.hilt", version.ref = "appspiriment" }
 appspiriment-room = { id = "io.github.appspiriment.room", version.ref = "appspiriment" }
-appspiriment-publish = { id = "io.github.appspiriment.mavenpublish", version.ref = "appspiriment" }

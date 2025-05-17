@@ -2,6 +2,7 @@ package com.appspiriment.conventions.plugins
 
 import appspirimentTomlName
 import com.appspiriment.conventions.extensions.copyAppspirimentLibs
+import com.appspiriment.conventions.extensions.copyAppspirimentLibs
 import getDefaultAppGradle
 import libVersion
 import org.gradle.api.Plugin
@@ -45,7 +46,7 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
         }
 
         target.rootDir.path.let { path ->
-            val ksp2Line = "ksp.useKSP2=true"
+            val ksp2Line = "#KSP2 is having issues with Hilt so don't use it at the moment\nksp.useKSP2=false"
             File("$path/gradle.properties").let{file->
                 file.readLines().apply {
                     if(any{it.contains(ksp2Line)}.not()) {
@@ -87,10 +88,7 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
 
         target.rootDir.absolutePath.let { File("$it/app/build.gradle.kts") }.takeIf { it.exists() }?.let{file ->
             if(!file.readText().contains("plugins.appspiriment.application")) {
-                val appId = file.readLines().toMutableList()
-                    .firstOrNull { line -> line.contains("applicationId") }?.split("=")?.get(1)
-                    ?.trim()?.replace("\"", "") ?: "com.example.application"
-                file.writeText(getDefaultAppGradle(appId))
+                file.writeText(getDefaultAppGradle())
             }
         }
         target.copyAppspirimentLibs()

@@ -9,8 +9,6 @@ targetSdk = "35"
 compileSdk = "35"
 javaVersion = "21"
 
-appspiriment = "0.0.3"
-appspirimentUtils = "0.0.2"
 
 #Classpath Version
 agp = "8.4.2"
@@ -155,6 +153,3 @@ vanniktech-publish = { id = "com.vanniktech.maven.publish", version.ref = "vanni
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinserializeplugin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebasecrashlyticsplugin" }
-
-appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }
-appspiriment-publish = { id = "io.github.appspiriment.mavenpublish", version.ref = "appspiriment" }

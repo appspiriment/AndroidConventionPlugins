@@ -18,9 +18,9 @@ import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME as Im
 class AndroidRoomConventionPlugin : Plugin<Project> {
 
     private val requiredDependencyList = listOf(
-        Dependency(config = Impl, aliases = listOf("android-room")),
-        Dependency(config = Impl, aliases = listOf("room.ktx")),
-        Dependency(config = "ksp", aliases = listOf("room.compiler")),
+        Dependency(config = Impl, aliases = listOf("room-runtime")),
+        Dependency(config = Impl, aliases = listOf("room-ktx")),
+        Dependency(config = "ksp", aliases = listOf("room-compiler")),
     )
 
 
