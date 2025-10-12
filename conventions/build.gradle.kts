@@ -10,7 +10,7 @@ plugins {
     `version-catalog`
 }
 
-val pluginVersion = "0.0.7"
+val pluginVersion = "0.0.11"
 val isDevBuild = false
 
 

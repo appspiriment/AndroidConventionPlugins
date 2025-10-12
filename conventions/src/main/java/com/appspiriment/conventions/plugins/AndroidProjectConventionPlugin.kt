@@ -49,7 +49,7 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
             val ksp2Line = "#KSP2 is having issues with Hilt so don't use it at the moment\nksp.useKSP2=false"
             File("$path/gradle.properties").let{file->
                 file.readLines().apply {
-                    if(any{it.contains(ksp2Line)}.not()) {
+                    if(none { it.contains("ksp.useKSP2") }) {
                         file.writeText(toMutableList().apply { add(ksp2Line) }.joinToString("\n"))
                     }
                 }
@@ -81,7 +81,8 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
                 }
                 lines.add(firstPluginLine,"//    id(\"io.github.appspiriment.project\") version \"$version\"")
                 lines.add(0,"//    Current Appspiriment Plugin version: \"$libVersion\"")
-//                lines.add(firstPluginLine,"//    alias(appspirimentlibs.plugins.appspiriment.project)")
+                if(!lines.contains("https://github.com/appspiriment/AndroidConventionPlugins")) lines.add(0,"//    Check https://github.com/appspiriment/AndroidConventionPlugins")
+                lines.add("")
                 file.writeText(lines.filter { it.isNotBlank() }.joinToString("\n"))
             }
         }
