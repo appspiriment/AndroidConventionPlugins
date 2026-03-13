@@ -19,13 +19,18 @@ dependencyResolutionManagement {
         create("appspirimentlibs") {
             from(files("gradle/appspirimentlibs.versions.toml"))
         }
+        create("kmp") {
+            from(files("gradle/kmp.versions.toml"))
+        }
     }
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
     }
 }
 
 rootProject.name = "Android Convention Plugins"
 include(":conventions")
+include(":resources")

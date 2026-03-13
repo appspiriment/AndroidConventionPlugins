@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Core Accent Colors -->
+    <color name="md_sys_color_primary">#C20F2F</color>
+    <color name="md_sys_color_on_primary">#FFFFFF</color>
+
+    <color name="md_sys_color_secondary">#03DAC6</color>
+    <color name="md_sys_color_on_secondary">#121212</color>
+
+    <color name="md_sys_color_tertiary">#3700B3</color>
+    <color name="md_sys_color_on_tertiary">#FFFFFF</color>
+
+    <!-- Surfaces & Background -->
+    <color name="md_sys_color_background">#F3F3F3</color>
+    <color name="md_sys_color_on_background">#1C1B1F</color>
+
+    <color name="md_sys_color_surface">#FFFFFF</color>
+    <color name="md_sys_color_on_surface">#121212</color>
+
+    <color name="md_sys_color_surface_variant">#EBEBEB</color>
+    <color name="md_sys_color_on_surface_variant">#121212</color>
+
+    <!-- Containers / Cards -->
+    <color name="md_sys_color_primary_container">#FFFFFF</color>
+    <color name="md_sys_color_on_primary_container">#121212</color>
+    <color name="md_sys_color_on_primary_container_dimmed">#5D6364</color>
+
+    <color name="md_sys_color_secondary_container">#EBEBEB</color>
+    <color name="md_sys_color_on_secondary_container">#121212</color>
+
+    <color name="md_sys_color_tertiary_container">#EBEBEB</color>
+    <color name="md_sys_color_on_tertiary_container">#121212</color>
+
+    <color name="md_sys_color_neutral_container">#F1F1F1</color>
+    <color name="md_sys_color_on_neutral_container">#121212</color>
+
+    <!-- Error -->
+    <color name="md_sys_color_error">#B00020</color>
+    <color name="md_sys_color_on_error">#FFFFFF</color>
+
+    <color name="md_sys_color_error_container">#FFCDD2</color>  <!-- softer pink-red -->
+    <color name="md_sys_color_on_error_container">#7E0000</color>
+
+    <!-- Utilities -->
+    <color name="md_sys_color_scrim">#020202</color>
+    <color name="md_sys_color_icon_tint">#888E92</color>
+    <color name="md_sys_color_icon_tint_disabled">#5D1D3B</color>
+    <color name="md_sys_color_navigation_bar">#282828</color>
+    <color name="md_sys_color_top_app_bar">#C20F2F</color>
+    <color name="md_sys_color_on_top_app_bar">#FFFFFF</color>
+    <color name="md_sys_color_divider">#BDBDBD</color>
+
+    <!-- Text hierarchy -->
+    <color name="md_sys_color_text_primary">#121212</color>
+    <color name="md_sys_color_text_secondary">#757575</color>
+    <color name="md_sys_color_text_hint">#99121212</color>
+    <color name="md_sys_color_text_disabled">#BDBDBD</color>
+
+    <!-- Accent text / titles -->
+    <color name="md_sys_color_text_accent_blue">#027DDF</color>
+    <color name="md_sys_color_text_accent_red">#AC081D</color>
+    <color name="md_sys_color_text_accent_gold">#C46F08</color>
+
+    <!-- Additional accent text (Material-inspired) -->
+    <color name="md_sys_color_text_accent_success">#2E7D32</color>
+    <color name="md_sys_color_text_accent_success_light">#4CAF50</color>
+
+    <color name="md_sys_color_text_accent_info">#01579B</color>
+    <color name="md_sys_color_text_accent_info_light">#0288D1</color>
+
+    <color name="md_sys_color_text_accent_warning">#F57C00</color>
+    <color name="md_sys_color_text_accent_warning_light">#FFB300</color>
+
+    <color name="md_sys_color_text_accent_emphasis">#D81B60</color>
+    <color name="md_sys_color_text_accent_emphasis_dim">#AD1457</color>
+
+    <color name="md_sys_color_text_accent_brand_red_light">#E53935</color>
+    <color name="md_sys_color_text_accent_brand_teal_light">#26A69A</color>
+    <color name="md_sys_color_text_accent_brand_purple_light">#7E57C2</color>
+
+</resources>

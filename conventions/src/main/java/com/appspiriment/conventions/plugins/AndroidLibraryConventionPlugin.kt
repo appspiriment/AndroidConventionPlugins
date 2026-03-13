@@ -3,34 +3,39 @@ package com.appspiriment.conventions.plugins
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.tools.r8.internal.re
+import com.appspiriment.conventions.extensions.appspirimentLibs
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
 
-open class AndroidBaseLibraryConventionPlugin : AndroidConventionPlugin() {
-    open val requireHilt = false
-    open val requireCompose = false
-    private val requiredPluginList = listOf(
-        "google-android-library",
-    )
-    override val Project.commonExtension: CommonExtension<*, *, *, *, *, *>
-        get() = extensions.getByType(LibraryExtension::class.java)
+open class AndroidLibraryConventionPlugin : AndroidBaseConventionPlugin() {
+    override val Project.commonExtension get() = extensions.getByType<LibraryExtension>()
+    open val setupHilt : Boolean = false
+    open val setupCompose : Boolean = false
 
     override fun apply(target: Project) {
-        applyPlugin(
-            target = target,
-            requireHilt = requireHilt,
-            requireCompose = requireCompose,
-            requiredPluginList = requiredPluginList,
-        )
+        // Explicitly apply the Android Application plugin first
+        target.run{
+            plugins.apply(target.appspirimentLibs.findPlugin("google-android-library").get().get().pluginId)
+            if(setupHilt) setupHilt()
+            if(setupCompose) setupCompose()
+            super.apply(this)
+        }
     }
 }
 
-class AndroidHiltLibraryConventionPlugin : AndroidBaseLibraryConventionPlugin() {
-    override val requireHilt: Boolean = true
+// AndroidLibraryHiltConventionPlugin.kt
+open class AndroidLibraryHiltConventionPlugin : AndroidLibraryConventionPlugin() {
+    override val setupHilt: Boolean = true
 }
-class AndroidComposeLibraryConventionPlugin : AndroidBaseLibraryConventionPlugin() {
-    override val requireCompose: Boolean = true
+
+// AndroidLibraryComposeConventionPlugin.kt
+class AndroidLibraryComposeConventionPlugin : AndroidLibraryConventionPlugin() {
+    override val setupCompose: Boolean = true
 }
-class AndroidHiltComposeLibraryConventionPlugin : AndroidBaseLibraryConventionPlugin() {
-    override val requireHilt: Boolean = true
-    override val requireCompose: Boolean = true
+
+// AndroidLibraryHiltComposeConventionPlugin.kt
+class AndroidLibraryHiltComposeConventionPlugin : AndroidLibraryConventionPlugin() {
+    override val setupHilt: Boolean = true
+    override val setupCompose: Boolean = true
 }
+

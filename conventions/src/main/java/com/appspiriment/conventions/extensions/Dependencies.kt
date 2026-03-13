@@ -3,93 +3,84 @@ package com.appspiriment.conventions.extensions
 import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
 import org.gradle.api.plugins.JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME
 
-val basePluginList get()= listOf(
+val basePluginList: List<String> = listOf(
     "kotlin-android",
 )
 
-val composePluginList get() = listOf(
+val composePluginList: List<String> = listOf(
     "kotlin-compose",
-    "kotlinx-serialization",
+    "kotlinx-serialization"
 )
-val hiltPluginList get() = listOf(
+
+val hiltPluginList: List<String> = listOf(
     "dagger-hilt-android",
     "devtools-ksp",
-    "kotlin-parcelize"
+    "kotlinx-serialization"
 )
 
-val hiltDependencies: List<Dependency> get()  =
-    listOf(
-        Dependency(
-            type = ImplType.DEPENDENCY,
-            config = IMPLEMENTATION_CONFIGURATION_NAME,
-            aliases = listOf("hilt-android", "hilt-compose-navigation")
-        ),
-        Dependency(
-            type = ImplType.DEPENDENCY,
-            config = "ksp",
-            aliases = listOf("hilt-compiler")
-        ),
+val hiltDependencies: List<Dependency> = listOf(
+    Dependency(
+        type = ImplType.DEPENDENCY,
+        config = IMPLEMENTATION_CONFIGURATION_NAME,
+        aliases = listOf("hilt-android", "hilt-compose-navigation", "kotlinx-serialize")
+    ),
+    Dependency(
+        type = ImplType.DEPENDENCY,
+        config = "ksp",
+        aliases = listOf("hilt-compiler")
     )
-
-val baseDependencies: List<Dependency> get() =
-    listOf(
-        Dependency(type = ImplType.BUNDLE, config = IMPLEMENTATION_CONFIGURATION_NAME, aliases = listOf("android-base")),
-        Dependency(
-            type = ImplType.BUNDLE,
-            config = TEST_IMPLEMENTATION_CONFIGURATION_NAME,
-            aliases = listOf("unit-test")
-        ),
-        Dependency(
-            type = ImplType.BUNDLE,
-            config = "androidTestImplementation",
-            aliases = listOf("android-test")
-        ),
-    )
-
-val utilDependencies: List<Dependency> get() = listOf(
-    Dependency(
-        aliases = listOf("appspiriment-utils")
-    ),
-    Dependency(
-        config = "debugImplementation",
-        aliases = listOf("appspiriment-logutils-dev")
-    ),
-    Dependency(
-        config = "releaseImplementation",
-        aliases = listOf("appspiriment-logutils-prod")
-    ),
 )
 
 
-val composeDependencies: List<Dependency> get() =
-    listOf(
-        Dependency(
-            type = ImplType.PLATFORM,
-            aliases = listOf("androidx-compose-bom")
-        ),
-        Dependency(
-            type = ImplType.BUNDLE,
-            aliases = listOf("android-compose")
-        ),
-        Dependency(
-            type = ImplType.DEPENDENCY,
-            config = "debugImplementation",
-            aliases = listOf("androidx-ui-tooling", "androidx-ui-test-manifest")
-        ),
-        Dependency(
-            type = ImplType.PLATFORM,
-            config = "androidTestImplementation",
-            aliases = listOf("androidx-compose-bom")
-        ),
-        Dependency(
-            type = ImplType.DEPENDENCY,
-            config = "androidTestImplementation",
-            aliases = listOf("androidx-ui-test-junit4")
-        ),
-        Dependency(
-            type = ImplType.DEPENDENCY,
-            aliases = listOf(
-                "lottie-compose", "hilt-compose-navigation", "appspiriment-compose"
-            )
-        ),
+val composeDependencies: List<Dependency>
+    get() =
+        listOf(
+            Dependency(
+                type = ImplType.PLATFORM,
+                aliases = listOf("androidx-compose-bom")
+            ),
+            Dependency(
+                type = ImplType.BUNDLE,
+                aliases = listOf("android-compose")
+            ),
+            Dependency(
+                type = ImplType.DEPENDENCY,
+                config = "debugImplementation",
+                aliases = listOf("androidx-ui-tooling", "androidx-ui-test-manifest")
+            ),
+            Dependency(
+                type = ImplType.PLATFORM,
+                config = "androidTestImplementation",
+                aliases = listOf("androidx-compose-bom")
+            ),
+            Dependency(
+                type = ImplType.DEPENDENCY,
+                config = "androidTestImplementation",
+                aliases = listOf("androidx-ui-test-junit4")
+            ),
+            Dependency(
+                type = ImplType.DEPENDENCY,
+                aliases = listOf(
+                    "appspiriment-compose", "lottie-compose", "hilt-compose-navigation",
+                )
+            ),
+        )
+
+val baseDependencies: List<Dependency> = listOf(
+    Dependency(
+        type = ImplType.BUNDLE,
+        config = IMPLEMENTATION_CONFIGURATION_NAME,
+        aliases = listOf("android-base")
+    ),
+    Dependency(
+        type = ImplType.BUNDLE,
+        config = TEST_IMPLEMENTATION_CONFIGURATION_NAME,
+        aliases = listOf("unit-test")
     )
+)
+
+val utilDependencies: List<Dependency> = listOf(
+    Dependency(aliases = listOf("appspiriment-utils")),
+    Dependency(config = "debugImplementation", aliases = listOf("appspiriment-logutils-dev")),
+    Dependency(config = "releaseImplementation", aliases = listOf("appspiriment-logutils-prod"))
+)

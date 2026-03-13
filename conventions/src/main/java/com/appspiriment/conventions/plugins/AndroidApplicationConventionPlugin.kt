@@ -2,26 +2,29 @@ package com.appspiriment.conventions.plugins
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
+import com.appspiriment.conventions.extensions.appspirimentLibs
+import com.appspiriment.conventions.extensions.hiltDependencies
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.getByType
 
-open class AndroidApplicationConventionPlugin : AndroidConventionPlugin() {
+// AndroidAppConventionPlugin.kt
+class AndroidApplicationConventionPlugin : AndroidBaseConventionPlugin() {
 
-    private val requiredPluginList = listOf(
-        "google-android-application",
-    )
-    override val Project.commonExtension get() = extensions.getByType(
-            ApplicationExtension::class.java
-        )
+    override val Project.commonExtension get() = extensions.getByType<ApplicationExtension>()
 
     override fun apply(target: Project) {
-        applyPlugin(
-            target = target,
-            requireHilt = true,
-            requireCompose = true,
-            requiredPluginList = requiredPluginList,
-        )
+        // 1. Apply the Android Application plugin **first** — explicitly
+        target.run {
+            plugins.apply(
+                target.appspirimentLibs.findPlugin("google-android-application").get()
+                    .get().pluginId
+            )
+
+            setupHilt()
+            setupCompose()
+            super.apply(this)
+        }
     }
 }
-
 
 
