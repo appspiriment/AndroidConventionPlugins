@@ -1,0 +1,212 @@
+[versions]
+# App & SDK Versions
+versionCode = "1"
+versionName = "1.0.0"
+minSdk = "26"
+# Synced with libs.versions.toml — targeting Android 16 (API 36)
+targetSdk = "36"
+compileSdk = "36"
+javaVersion = "21"
+
+# Appspiriment Plugin Versions
+appspiriment = "0.0.14.dev-208"
+appspirimentLogUtils = "0.0.1"
+appspirimentUtils = "0.0.5.dev-11"
+appspirimentComposeUtils = "0.0.6.dev-78"
+appspirimentUpdateUtils = "0.0.1"
+
+# Classpath & Tooling — synced with libs.versions.toml
+agp = "8.13.1"
+kotlin = "2.3.10"
+ksp = "2.3.6"
+hilt = "2.58"
+kotlinserializeplugin = "2.3.10"
+
+# Core Library Versions
+coreKtx = "1.17.0"
+room = "2.7.2"
+kotlinserialize = "1.8.0"
+kotlinxCoroutines = "1.10.1"
+googleServices = "4.4.3"
+
+# Compose & Lifecycle — synced with libs.versions.toml
+lifecycleRuntimeKtx = "2.10.0"
+activityCompose = "1.12.4"
+composeBom = "2026.02.01"
+composeNavigation = "2.9.1"
+composeHiltNavigation = "1.3.0"
+lifecycle = "2.10.0"
+material-icons-extended = "1.7.8"
+material-icons = "1.7.8"
+
+# Networking & Data
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+loggingInterceptor = "4.11.0"
+gson = "2.11.0"
+chucker = "4.2.0"
+datastore = "1.1.1"
+security = "1.1.0-alpha06" # TODO: upgrade to stable when androidx.security 1.1.0 stable is released
+tink = "1.15.0"
+work = "2.10.0"
+hiltWork = "1.2.0"
+retrofitSerialization = "2.11.0" # Uses Retrofit's own official kotlinx.serialization converter (com.squareup.retrofit2)
+
+# Tools & Test
+lottie = "6.6.0"
+firebaseBom = "33.14.0"
+firebasecrashlyticsplugin = "3.0.4"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+mockito = "6.2.3"
+turbine = "1.1.0"
+
+[libraries]
+# --- ANDROID CORE ---
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+# Note: multidex is NOT included — minSdk 26+ has native multidex support
+
+# --- COMPOSE ---
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+# ui-tooling is debug-only — added via debugImplementation in the plugin, NOT in the bundle
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material = { group = "androidx.compose.material", name = "material" }
+# ^ Available as an opt-in alias for modules that need Material 1 components (e.g. BottomSheetScaffold).
+# NOT included in the android-compose bundle — use Material 3 (androidx-material3) by default.
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core-android", version.ref = "material-icons" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended-android", version.ref = "material-icons-extended" }
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+kotlinx-serialize = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinserialize" }
+
+# --- HILT ---
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-compose-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "composeHiltNavigation" }
+androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltWork" }
+androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltWork" }
+
+# --- ROOM ---
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+
+# --- DATA LAYER & SECURITY ---
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security" }
+tink-android = { group = "com.google.crypto.tink", name = "tink-android", version.ref = "tink" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
+
+# --- NETWORKING ---
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+chucker-library = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
+chucker-library-no-op = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
+retrofit-converter-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofitSerialization" }
+
+# --- FIREBASE ---
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-database-ktx = { module = "com.google.firebase:firebase-database-ktx" }
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
+firebase-config-ktx = { module = "com.google.firebase:firebase-config-ktx" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx" }
+
+# --- UTILS & APPSPIRIMENT ---
+appspiriment-logutils-dev = { group = "io.github.appspiriment", name = "logutils-dev", version.ref = "appspirimentLogUtils" }
+appspiriment-logutils-prod = { group = "io.github.appspiriment", name = "logutils-prod", version.ref = "appspirimentLogUtils" }
+appspiriment-utils = { group = "io.github.appspiriment", name = "utils", version.ref = "appspirimentUtils" }
+appspiriment-compose = { group = "io.github.appspiriment", name = "compose-utils", version.ref = "appspirimentComposeUtils" }
+appspiriment-update = { group = "io.github.appspiriment", name = "update-utils", version.ref = "appspirimentUpdateUtils" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
+
+# --- TEST ---
+junit-test = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+
+[bundles]
+android-base = [
+    # multidex intentionally excluded — minSdk 26+ has native multidex support
+    "androidx-core-ktx",
+    "androidx-lifecycle-runtime-ktx",
+    "kotlinx-coroutines-android"
+]
+android-compose = [
+    # ui-tooling intentionally excluded — added as debugImplementation by the plugin
+    # lottie-compose intentionally excluded — added as opt-in via enableUtils
+    # androidx-material intentionally excluded — Material 3 (androidx-material3) is the standard; forcing both causes conflicts
+    # androidx-ui-text-google-fonts intentionally excluded — network dependency, add explicitly if needed
+    "androidx-activity-compose",
+    "androidx-compose-foundation",
+    "androidx-ui",
+    "androidx-ui-tooling-preview",
+    "androidx-material3",
+    "androidx-compose-material-icons-core",
+    "androidx-compose-material-icons-extended",
+    "androidx-compose-navigation",
+    "androidx-lifecycle-viewModelCompose",
+    "androidx-lifecycle-runtimeCompose",
+    "kotlinx-serialize"
+]
+unit-test = [
+    "junit-test",
+    "mockito-kotlin",
+    "kotlinx-coroutines-test",
+    "turbine"
+]
+android-test = [
+    "androidx-junit",
+    "androidx-espresso-core"
+]
+retrofit = [
+    "okhttp",
+    "retrofit-core",
+    "gson",
+    "converter-gson",
+    "okhttp-logging",
+    "kotlinx-serialize"
+]
+
+[plugins]
+google-android-application = { id = "com.android.application", version.ref = "agp" }
+google-android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinserializeplugin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebasecrashlyticsplugin" }
+
+# Appspiriment Convention Plugins
+appspiriment-application = { id = "io.github.appspiriment.application", version.ref = "appspiriment" }
+appspiriment-library = { id = "io.github.appspiriment.library", version.ref = "appspiriment" }
+appspiriment-library-compose = { id = "io.github.appspiriment.library-compose", version.ref = "appspiriment" }
+appspiriment-library-hilt = { id = "io.github.appspiriment.library-hilt", version.ref = "appspiriment" }
+appspiriment-library-hilt-compose = { id = "io.github.appspiriment.library-hilt-compose", version.ref = "appspiriment" }
+appspiriment-data = { id = "io.github.appspiriment.data", version.ref = "appspiriment" }
