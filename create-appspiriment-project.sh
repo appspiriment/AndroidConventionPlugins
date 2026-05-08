@@ -20,7 +20,9 @@ read -p "Enter Package Name (e.g. com.company.myapp): " NEW_PACKAGE
 read -p "Enter GitHub Repo Name (default: $APP_NAME): " REPO_NAME
 REPO_NAME=${REPO_NAME:-$APP_NAME}
 
-DEST_DIR="../$APP_NAME"
+DEFAULT_DEST="../$APP_NAME"
+read -p "Enter Destination Directory (default: $DEFAULT_DEST): " DEST_DIR
+DEST_DIR=${DEST_DIR:-$DEFAULT_DEST}
 
 if [ -d "$DEST_DIR" ]; then
     echo "❌ Error: Directory $DEST_DIR already exists."

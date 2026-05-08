@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_bar_height">73dp</dimen>
+
+    <dimen name="icon_xsmall">10dp</dimen>
+    <dimen name="icon_small">21dp</dimen>
+    <dimen name="icon_medium">26dp</dimen>
+    <dimen name="icon_standard">31dp</dimen>
+    <dimen name="icon_standard_large">36dp</dimen>
+    <dimen name="icon_large">42dp</dimen>
+    <dimen name="icon_xlarge">52dp</dimen>
+    <dimen name="icon_xxlarge">62dp</dimen>
+    <dimen name="icon_xxxlarge">73dp</dimen>
+    <dimen name="icon_xxxxlarge">83dp</dimen>
+    <dimen name="icon_big">104dp</dimen>
+    <dimen name="icon_giant">166dp</dimen>
+
+    <dimen name="padding_giant">73dp</dimen>
+    <dimen name="padding_xxxxlarge">62dp</dimen>
+    <dimen name="padding_xxxlarge">52dp</dimen>
+    <dimen name="padding_xxlarge">42dp</dimen>
+    <dimen name="padding_xlarge">31dp</dimen>
+    <dimen name="padding_large">26dp</dimen>
+    <dimen name="padding_medium">21dp</dimen>
+    <dimen name="padding_smallmedium">16dp</dimen>
+    <dimen name="padding_small">10dp</dimen>
+    <dimen name="padding_xsmall_plus">8dp</dimen>
+    <dimen name="padding_xsmall">5dp</dimen>
+    <dimen name="padding_xxsmall">3dp</dimen>
+    <dimen name="padding_tiny">1dp</dimen>
+    <dimen name="no_padding">0dp</dimen>
+
+    <dimen name="corner_radius_small">4dp</dimen>
+    <dimen name="corner_radius_medium">5dp</dimen>
+    <dimen name="corner_radius_normal">10dp</dimen>
+    <dimen name="corner_radius_medium_large">16dp</dimen>
+    <dimen name="corner_radius_large">21dp</dimen>
+    <dimen name="corner_radius_xlarge">26dp</dimen>
+    <dimen name="corner_radius_xxlarge">31dp</dimen>
+    <dimen name="corner_radius_xxxlarge">42dp</dimen>
+
+    <dimen name="action_button_size">62dp</dimen>
+    <dimen name="fab_button_size_small">52dp</dimen>
+    <dimen name="fab_button_size">62dp</dimen>
+    <dimen name="fab_button_size_large">73dp</dimen>
+
+    <dimen name="font_size_minimum">8sp</dimen>
+    <dimen name="font_size_tiny">9sp</dimen>
+    <dimen name="font_size_xxxsmall">10sp</dimen>
+    <dimen name="font_size_xxsmall">12sp</dimen>
+    <dimen name="font_size_xsmall">13sp</dimen>
+    <dimen name="font_size_xsmall_medium">14sp</dimen>
+    <dimen name="font_size_small">16sp</dimen>
+    <dimen name="font_size_small_medium">17sp</dimen>
+    <dimen name="font_size_medium">18sp</dimen>
+    <dimen name="font_size_medium_mid">20sp</dimen>
+    <dimen name="font_size_medium_large">21sp</dimen>
+    <dimen name="font_size_large">23sp</dimen>
+    <dimen name="font_size_xlarge">26sp</dimen>
+    <dimen name="font_size_xxlarge">31sp</dimen>
+    <dimen name="font_size_xxxlarge">36sp</dimen>
+    <dimen name="font_size_big">42sp</dimen>
+    <dimen name="font_size_xbig">47sp</dimen>
+    <dimen name="font_size_huge">52sp</dimen>
+    <dimen name="font_size_giant">62sp</dimen>
+</resources>
