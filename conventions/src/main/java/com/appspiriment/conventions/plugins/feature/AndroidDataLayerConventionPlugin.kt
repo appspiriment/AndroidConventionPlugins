@@ -1,52 +1,39 @@
 package com.appspiriment.conventions.plugins.feature
 
-import com.android.build.gradle.LibraryExtension
-import com.appspiriment.conventions.extensions.*
-import com.appspiriment.conventions.plugins.AndroidLibraryHiltConventionPlugin
+import com.appspiriment.conventions.extensions.DATA_LAYER_EXTENSION_NAME
+import com.appspiriment.conventions.extensions.DataLayerExtension
+import com.appspiriment.conventions.extensions.Dependency
+import com.appspiriment.conventions.extensions.appspirimentLibs
+import com.appspiriment.conventions.extensions.implementDependency
+import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.dependencies
 
 /**
- * World-class Data Layer Convention Plugin.
+ * Convention plugin for Android data layer modules.
  */
-class AndroidDataLayerConventionPlugin : AndroidLibraryHiltConventionPlugin() {
+class AndroidDataLayerConventionPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
         with(target) {
-            // 1. Create the configuration extension
-            // DATA_LAYER_EXTENSION_NAME should be "dataLayer"
             val dataConfig = extensions.create<DataLayerExtension>(DATA_LAYER_EXTENSION_NAME)
-
-            // 2. Apply base shared logic (Kotlin, SDKs, Hilt)
-            super.apply(this)
-
-            // 3. Architecturally enforce: No Compose in Data Layer modules
-            configure<LibraryExtension> {
-                buildFeatures { compose = false }
-            }
-
-            // 4. Configure dependencies based on the extension
-            // We use 'dependencies' block directly.
-            // Note: If you use regular 'val', you might need 'afterEvaluate'.
-            // If you use 'Property', you can use 'dataConfig.room.enabled.get()'
 
             afterEvaluate {
                 dependencies {
                     val libs = appspirimentLibs
 
                     // --- PERSISTENCE (ROOM) ---
-                    // --- PERSISTENCE (ROOM) ---
                     if (dataConfig.room.enabled.getOrElse(false)) {
                         implementDependency(libs, listOf(
-                            Dependency(aliases = listOf("androidx-room-runtime", "androidx-room-ktx"))
+                            Dependency(notation = "androidx.room:room-runtime", versionRef = "room"),
+                            Dependency(notation = "androidx.room:room-ktx", versionRef = "room")
                         ))
-                        add("ksp", libs.findLibrary("androidx-room-compiler").get())
+                        add("ksp", "androidx.room:room-compiler:${libs.findVersion("room").get()}")
 
                         if (dataConfig.room.usePaging.getOrElse(false)) {
-                            // IMPORTANT: Use 'implementation' (via implementDependency)
-                            // so the KSP processor can see the LimitOffsetPagingSource type
                             implementDependency(libs, listOf(
-                                Dependency(aliases = listOf("androidx-room-paging"))
+                                Dependency(notation = "androidx.room:room-paging", versionRef = "room")
                             ))
                         }
                     }
@@ -54,38 +41,44 @@ class AndroidDataLayerConventionPlugin : AndroidLibraryHiltConventionPlugin() {
                     // --- SECURITY ---
                     if (dataConfig.security.enabled.getOrElse(false)) {
                         implementDependency(libs, listOf(
-                            Dependency(aliases = listOf("androidx-security-crypto", "tink-android"))
+                            Dependency(notation = "androidx.security:security-crypto", versionRef = "security"),
+                            Dependency(notation = "com.google.crypto.tink:tink-android", versionRef = "tink")
                         ))
                     }
 
                     // --- DATASTORE ---
                     if (dataConfig.dataStore.enabled.getOrElse(false)) {
-                        implementDependency(libs, listOf(Dependency(aliases = listOf("datastore-preferences"))))
+                        implementDependency(libs, listOf(
+                            Dependency(notation = "androidx.datastore:datastore-preferences", versionRef = "datastore")
+                        ))
                     }
 
                     // --- WORK MANAGER ---
                     if (dataConfig.workManager.enabled.getOrElse(false)) {
                         implementDependency(libs, listOf(
-                            Dependency(aliases = listOf("androidx-work-runtime-ktx", "androidx-hilt-work"))
+                            Dependency(notation = "androidx.work:work-runtime-ktx", versionRef = "work"),
+                            Dependency(notation = "androidx.hilt:hilt-work", versionRef = "hiltWork")
                         ))
-                        add("ksp", libs.findLibrary("androidx-hilt-compiler").get())
+                        add("ksp", "androidx.hilt:hilt-compiler:${libs.findVersion("hiltWork").get()}")
                     }
 
                     // --- NETWORKING (RETROFIT) ---
                     if (dataConfig.retrofit.enabled.getOrElse(false)) {
                         implementDependency(libs, listOf(
-                            Dependency(aliases = listOf("retrofit-core", "okhttp-logging", "converter-gson"))
+                            Dependency(notation = "com.squareup.retrofit2:retrofit", versionRef = "retrofit"),
+                            Dependency(notation = "com.squareup.okhttp3:logging-interceptor", versionRef = "loggingInterceptor"),
+                            Dependency(notation = "com.squareup.retrofit2:converter-gson", versionRef = "retrofit")
                         ))
 
                         if (dataConfig.retrofit.useChucker.getOrElse(false)) {
-                            add("debugImplementation", libs.findLibrary("chucker-library").get())
-                            add("releaseImplementation", libs.findLibrary("chucker-library-no-op").get())
+                            add("debugImplementation", "com.github.chuckerteam.chucker:library:${libs.findVersion("chucker").get()}")
+                            add("releaseImplementation", "com.github.chuckerteam.chucker:library-no-op:${libs.findVersion("chucker").get()}")
                         }
 
                         if (dataConfig.retrofit.useKotlinSerialization.getOrElse(false)) {
                             pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
                             implementDependency(libs, listOf(
-                                Dependency(aliases = listOf("retrofit-converter-kotlinx-serialization"))
+                                Dependency(notation = "com.squareup.retrofit2:converter-kotlinx-serialization", versionRef = "retrofitSerialization")
                             ))
                         }
                     }

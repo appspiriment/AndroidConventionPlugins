@@ -20,60 +20,64 @@ internal fun VersionCatalog.getVersion(alias: String): String {
  * Applies plugins from the catalog. Throws if any plugin is missing.
  */
 internal fun PluginManager.applyPluginFromLibs(vararg pluginGroups: Pair<VersionCatalog, List<String>>) {
-    pluginGroups.forEach { (catalog, aliases) ->
-        aliases.forEach { alias ->
-            val plugin = catalog.findPlugin(alias).orElseThrow {
-                IllegalStateException("Plugin alias '$alias' not found in Version Catalog")
-            }.get()
+    pluginGroups.forEach { (catalog, ids) ->
+        ids.forEach { id ->
+            // Try to find the version for this id if it's a known plugin
+            val version = catalog.findVersion(id.substringAfterLast(".")).map { it.toString() }
+                .orElseGet {
+                    // Fallback to searching by alias if the ID matches an alias
+                    catalog.findPlugin(id).map { it.get().version.displayName }.orElse(null)
+                }
 
-            // Gradle's PluginManager.hasPlugin is efficient,
-            // but we can just use 'apply' directly for most built-in plugins.
-            // However, for KSP/Hilt, checking first prevents 're-configuration' overhead.
-            if (!hasPlugin(plugin.pluginId)) {
-                apply(plugin.pluginId)
+            if (!hasPlugin(id)) {
+                apply(id)
             }
         }
     }
 }
 
 /**
- * Applies a list of dependencies using the catalog.
+ * Applies a list of dependencies.
+ * If versionRef is provided, it constructs "group:name:version" using the catalog.
+ * Otherwise, it looks up the notation as an alias in the catalog.
  */
 internal fun DependencyHandlerScope.implementDependency(
     libs: VersionCatalog,
     dependencyList: List<Dependency>
 ) {
     dependencyList.forEach { dep ->
-        when (dep.type) {
-            ImplType.BUNDLE -> implement(libs, dep.config, dep.aliases, isBundle = true)
-            ImplType.DEPENDENCY -> implement(libs, dep.config, dep.aliases)
-            ImplType.PROJECT -> dep.aliases.forEach { alias ->
-                add(dep.config, project(alias))
-            }
-            ImplType.PLATFORM -> implement(libs, dep.config, dep.aliases, isPlatform = true)
-        }
-    }
-}
+        val notation = dep.notation
+        val versionRef = dep.versionRef
 
-private fun DependencyHandlerScope.implement(
-    libs: VersionCatalog,
-    config: String,
-    aliases: List<String>,
-    isBundle: Boolean = false,
-    isPlatform: Boolean = false
-) {
-    aliases.forEach { alias ->
-        libs.run {
-            if (isBundle) {
-                findBundle(alias).getOrElse {
-                    throw IllegalStateException("Bundle '$alias' not found in catalog '${name}'")
-                }?.let { add(config, it) }
-            } else {
-                findLibrary(alias).getOrElse {
-                    throw IllegalStateException("Library '$alias' not found in catalog '${name}'")
-                }?.let {
-                    add(config, if (isPlatform) platform(it) else it)
+        when (dep.type) {
+            ImplType.PROJECT -> {
+                if (notation is String) {
+                    add(dep.config, project(notation))
                 }
+            }
+            ImplType.BUNDLE -> {
+                if (notation is String) {
+                    val bundle = libs.findBundle(notation).getOrElse {
+                        throw IllegalStateException("Bundle '$notation' not found in catalog '${libs.name}'")
+                    }
+                    add(dep.config, bundle)
+                }
+            }
+            else -> {
+                val dependency: Any = if (versionRef != null && notation is String) {
+                    val version = libs.findVersion(versionRef).getOrElse {
+                        throw IllegalStateException("Version '$versionRef' not found in catalog '${libs.name}'")
+                    }.toString()
+                    "$notation:$version"
+                } else if (notation is String) {
+                    // Try alias lookup
+                    libs.findLibrary(notation).map { it.get() as Any }.orElse(notation)
+                } else {
+                    notation
+                }
+
+                val finalDep = if (dep.type == ImplType.PLATFORM) platform(dependency) else dependency
+                add(dep.config, finalDep)
             }
         }
     }
@@ -82,7 +86,19 @@ private fun DependencyHandlerScope.implement(
 data class Dependency(
     val type: ImplType = ImplType.DEPENDENCY,
     val config: String = IMPLEMENTATION_CONFIGURATION_NAME,
-    val aliases: List<String>
+    /**
+     * The notation for the dependency.
+     * Can be:
+     * 1. A string in "group:name" format (version will be appended from catalog).
+     * 2. A string alias (lookup in catalog).
+     * 3. A Project object (for ImplType.PROJECT).
+     */
+    val notation: Any,
+    /**
+     * The key in the [versions] section of the TOML file.
+     * If provided, the dependency is assumed to be "group:name" and the version is appended.
+     */
+    val versionRef: String? = null
 )
 
 enum class ImplType { BUNDLE, DEPENDENCY, PROJECT, PLATFORM }

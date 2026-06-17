@@ -1,14 +1,10 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Top-level build file for the Appspiriment Convention Plugins project.
+// Module-specific configuration is in each module's build.gradle.kts.
 plugins {
     alias(libs.plugins.google.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.vanniktech.publish) apply false
-    //    alias(libs.plugins.android.application) apply false
-//    alias(libs.plugins.kotlin.android) apply false
-//    alias(libs.plugins.android.library) apply false
-//    alias(libs.plugins.dagger.hilt.android) apply false
-//    alias(libs.plugins.devtools.ksp) apply false
-//    alias(libs.plugins.kotlinx.serialization) apply false
-//    alias(libs.plugins.kotlin.compose) apply false
-//    alias(libs.plugins.appspiriment.settings)
+    alias(libs.plugins.google.firebase.appdistribution) apply false
+    alias(libs.plugins.google.firebase.perf) apply false
+    alias(libs.plugins.google.android.test) apply false
 }

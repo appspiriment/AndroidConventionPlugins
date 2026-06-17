@@ -1,3 +1,8 @@
+# KMP (Kotlin Multiplatform) Version Catalog
+# Reserved for future KMP module support.
+# Currently declared in settings.gradle.kts but no KMP modules exist yet.
+# Remove from settings.gradle.kts if KMP support is not planned.
+
 [versions]
 kotlin = "2.2.21"
 

@@ -1,86 +1,129 @@
 package com.appspiriment.conventions.extensions
 
-import org.gradle.api.plugins.JavaPlugin.IMPLEMENTATION_CONFIGURATION_NAME
-import org.gradle.api.plugins.JavaPlugin.TEST_IMPLEMENTATION_CONFIGURATION_NAME
+import org.gradle.api.artifacts.dsl.DependencyHandler
+
+const val IMPLEMENTATION_CONFIGURATION_NAME = "implementation"
+const val TEST_IMPLEMENTATION_CONFIGURATION_NAME = "testImplementation"
 
 val basePluginList: List<String> = listOf(
-    "kotlin-android",
+    "org.jetbrains.kotlin.android",
 )
 
 val composePluginList: List<String> = listOf(
-    "kotlin-compose",
-    "kotlinx-serialization"
+    "org.jetbrains.kotlin.plugin.compose",
+    "org.jetbrains.kotlin.plugin.serialization"
 )
 
 val hiltPluginList: List<String> = listOf(
-    "dagger-hilt-android",
-    "devtools-ksp",
-    "kotlinx-serialization"
+    "com.google.dagger.hilt.android",
+    "com.google.devtools.ksp",
+    "org.jetbrains.kotlin.plugin.serialization"
 )
 
+/**
+ * Hilt core dependencies.
+ */
 val hiltDependencies: List<Dependency> = listOf(
     Dependency(
-        type = ImplType.DEPENDENCY,
-        config = IMPLEMENTATION_CONFIGURATION_NAME,
-        aliases = listOf("hilt-android", "hilt-compose-navigation", "kotlinx-serialize")
+        notation = "com.google.dagger:hilt-android",
+        versionRef = "hilt"
     ),
     Dependency(
-        type = ImplType.DEPENDENCY,
+        notation = "org.jetbrains.kotlinx:kotlinx-serialization-json",
+        versionRef = "kotlinserialize"
+    ),
+    Dependency(
         config = "ksp",
-        aliases = listOf("hilt-compiler")
+        notation = "com.google.dagger:hilt-android-compiler",
+        versionRef = "hilt"
     )
 )
 
+/**
+ * Compose dependencies.
+ */
+val composeDependencies: List<Dependency> = listOf(
+    Dependency(
+        type = ImplType.PLATFORM,
+        notation = "androidx.compose:compose-bom",
+        versionRef = "composeBom"
+    ),
+    Dependency(
+        type = ImplType.BUNDLE,
+        notation = "android-compose"
+    ),
+    Dependency(
+        config = "debugImplementation",
+        notation = "androidx.compose.ui:ui-tooling",
+        versionRef = "material-icons" // Uses material-icons version ref for UI items
+    ),
+    Dependency(
+        config = "debugImplementation",
+        notation = "androidx.compose.ui:ui-test-manifest",
+        versionRef = "material-icons"
+    ),
+    Dependency(
+        type = ImplType.PLATFORM,
+        config = "androidTestImplementation",
+        notation = "androidx.compose:compose-bom",
+        versionRef = "composeBom"
+    ),
+    Dependency(
+        config = "androidTestImplementation",
+        notation = "androidx.compose.ui:ui-test-junit4",
+        versionRef = "material-icons"
+    ),
+    Dependency(
+        notation = "androidx.hilt:hilt-navigation-compose",
+        versionRef = "composeHiltNavigation"
+    ),
+)
 
-val composeDependencies: List<Dependency>
-    get() =
-        listOf(
-            Dependency(
-                type = ImplType.PLATFORM,
-                aliases = listOf("androidx-compose-bom")
-            ),
-            Dependency(
-                type = ImplType.BUNDLE,
-                aliases = listOf("android-compose")
-            ),
-            Dependency(
-                type = ImplType.DEPENDENCY,
-                config = "debugImplementation",
-                aliases = listOf("androidx-ui-tooling", "androidx-ui-test-manifest")
-            ),
-            Dependency(
-                type = ImplType.PLATFORM,
-                config = "androidTestImplementation",
-                aliases = listOf("androidx-compose-bom")
-            ),
-            Dependency(
-                type = ImplType.DEPENDENCY,
-                config = "androidTestImplementation",
-                aliases = listOf("androidx-ui-test-junit4")
-            ),
-            Dependency(
-                type = ImplType.DEPENDENCY,
-                aliases = listOf(
-                    "appspiriment-compose", "lottie-compose", "hilt-compose-navigation",
-                )
-            ),
-        )
-
+/**
+ * Base dependencies added to every module.
+ */
 val baseDependencies: List<Dependency> = listOf(
     Dependency(
         type = ImplType.BUNDLE,
-        config = IMPLEMENTATION_CONFIGURATION_NAME,
-        aliases = listOf("android-base")
+        notation = "android-base"
     ),
     Dependency(
         type = ImplType.BUNDLE,
         config = TEST_IMPLEMENTATION_CONFIGURATION_NAME,
-        aliases = listOf("unit-test")
+        notation = "unit-test"
     )
 )
 
+/**
+ * Optional Appspiriment utility dependencies.
+ */
 val utilDependencies: List<Dependency> = listOf(
-    Dependency(aliases = listOf("appspiriment-utils")),
-    Dependency(config = "debugImplementation", aliases = listOf("appspiriment-logutils-dev")),
-    Dependency(config = "releaseImplementation", aliases = listOf("appspiriment-logutils-prod"))
+    Dependency(
+        notation = "io.github.appspiriment:utils",
+        versionRef = "appspirimentUtils"
+    ),
+    Dependency(
+        config = "debugImplementation",
+        notation = "io.github.appspiriment:logutils-dev",
+        versionRef = "appspirimentLogUtils"
+    ),
+    Dependency(
+        config = "releaseImplementation",
+        notation = "io.github.appspiriment:logutils-prod",
+        versionRef = "appspirimentLogUtils"
+    )
+)
+
+/**
+ * Optional Compose utility dependencies.
+ */
+val composeUtilDependencies: List<Dependency> = listOf(
+    Dependency(
+        notation = "io.github.appspiriment:compose-utils",
+        versionRef = "appspirimentComposeUtils"
+    ),
+    Dependency(
+        notation = "com.airbnb.android:lottie-compose",
+        versionRef = "lottie"
+    )
 )

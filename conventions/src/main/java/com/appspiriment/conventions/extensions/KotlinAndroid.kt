@@ -1,6 +1,5 @@
 package com.appspiriment.conventions.extensions
 
-// ADD these critical imports for Kotlin 2.0+
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Project
@@ -8,17 +7,16 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatterBuilder
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 // ────────────────────────────────────────────────────────────────────────────────
-// Extension Functions (moved here for single-file convenience)
+// Extension Functions
 // ────────────────────────────────────────────────────────────────────────────────
 
 internal fun Project.configureAndroidEarly(commonExtension: CommonExtension<*, *, *, *, *, *>) {
     commonExtension.apply {
         compileSdk = projectConfigs.compileSdk
-
 
         defaultConfig {
             minSdk = projectConfigs.minSdk
@@ -26,10 +24,8 @@ internal fun Project.configureAndroidEarly(commonExtension: CommonExtension<*, *
             vectorDrawables.useSupportLibrary = true
         }
 
-        if(commonExtension is ApplicationExtension){
-            commonExtension.defaultConfig {
-                targetSdk = projectConfigs.targetSdk
-            }
+        if (this is ApplicationExtension) {
+            defaultConfig.targetSdk = projectConfigs.targetSdk
         }
 
         compileOptions {
@@ -37,7 +33,6 @@ internal fun Project.configureAndroidEarly(commonExtension: CommonExtension<*, *
             targetCompatibility = projectConfigs.javaVersion
         }
     }
-
 }
 
 
@@ -45,18 +40,6 @@ internal fun Project.configureAndroidLate(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
     addDevSuffixToDebug: Boolean
 ) {
-    commonExtension.apply {
-        if (this is ApplicationExtension) {
-            defaultConfig {
-                buildTypes.getByName("debug") {
-                    if (addDevSuffixToDebug) {
-                        versionNameSuffix = getVersionCodeSuffix()
-                        applicationIdSuffix = ".dev"
-                    }
-                }
-            }
-        }
-    }
     // Kotlin compiler options
     extensions.configure<KotlinAndroidProjectExtension> {
         compilerOptions {
@@ -65,34 +48,19 @@ internal fun Project.configureAndroidLate(
                 "-opt-in=kotlin.RequiresOptIn",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-opt-in=kotlinx.coroutines.FlowPreview",
-                // ──────────────────────────────────────────────────────────
-                // ADD THESE TWO LINES HERE
-                // ──────────────────────────────────────────────────────────
-                "-Xannotation-default-target=param-property", // Silences the Hilt/UseCase warnings
-                "-Xcontext-parameters" // Replaces the deprecated -Xcontext-receivers
-            )
-        }
-    }
-
-    // Kotlin compiler options (late is fine)
-    extensions.configure<KotlinAndroidProjectExtension> {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-            freeCompilerArgs.addAll(
-                "-opt-in=kotlin.RequiresOptIn",
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-opt-in=kotlinx.coroutines.FlowPreview",
-                "-Xcontext-receivers"
+                "-Xannotation-default-target=param-property",
+                "-Xcontext-parameters"
             )
         }
     }
 }
 
 
-internal fun getVersionCodeSuffix(): String {
+/**
+ * Generates a version name suffix in the format `.yyyyMMdd.HHmmss`.
+ */
+internal fun buildDateSuffix(): String {
     val now = LocalDateTime.now()
-    val formatter = DateTimeFormatterBuilder()
-        .appendPattern(".dev.yyMMdd.HHmmss")
-        .toFormatter(Locale.ENGLISH)
-    return formatter.format(now)
+    val formatter = DateTimeFormatter.ofPattern("yyyyMMdd.HHmmss", Locale.ENGLISH)
+    return ".${formatter.format(now)}"
 }
